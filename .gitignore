@@ -1,6 +1,5 @@
 node_modules/
 .env
-public
 .idea/
 .vscode/
 .cfignore
