@@ -1,0 +1,748 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: sunapp-rest-api
+  description: sunapp
+basePath: /api/v1
+tags:
+  - name: Examples
+    description: Simple example endpoints
+  - name: Problem
+    description: "문제 신고"
+  - name: FAQ
+    description: FAQ Endpoint
+  - name: User
+    description: User Endpoint
+  - name: Game
+    description: Game에 관한 Endpoint. 예를 들어, 공무원의 신, 자격증의 신
+  - name: Topic
+    description: Topic에 관한 Endpoint. 예를 들어, 9급 공무원, 7급 공무원
+  - name: Question
+    description: 문제, 영역 등을 전부 관리하는 Endpoint. 9급 공무원에 해당하는 국어 문제지를 추가하고 문제지에 질문 아이템을 추가할 수도 있음.
+  - name: Specification
+    description: The swagger API specification
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  ProblemModel:
+    type: object
+    properties:
+      question:
+        type: string
+        description: "자주 묻는 질문"
+      email:
+        type: string
+        description: "답변"
+
+  FaqModel:
+    type: object
+    properties:
+      topic:
+        type: string
+        description: "FAQ 주제"
+      question:
+        type: string
+        description: "자주 묻는 질문"
+      answer:
+        type: string
+        description: "답변"
+  TokenModel:
+    type: object
+    properties:
+      currentToken:
+        type: string
+        description: "이전의 사용되던 액세스 토큰"
+      refreshToken:
+        type: string
+        description: "새로 바뀔 액세스 토큰"
+
+  GamePlayingRequest:
+    type: object
+    properties:
+      userPlayingType:
+        type: string
+        description: "랜덤, 친구, 싱글 플레이"
+      questionaireId:
+        type: integer
+        description: "풀고자 하는 문제지 Id"
+      userId:
+        type: integer
+        description: "나의 UserId"
+      opponentUserId:
+        type: integer
+        description: "상대방의 UserId"
+
+  Answer:
+    type: object
+    properties:
+      answer:
+        type: integer
+      character:
+        type: string
+        enum: 
+          - "random"
+          - "single"
+          - "friend"
+
+  Topic:
+    type: object
+    properties:
+      gameId:
+        type: integer
+      topicName:
+        type: string
+
+  Game:
+    type: object
+    properties:
+      gameName:
+        type: string
+
+  GameResult:
+    type: object
+    properties:
+      winnerUserId:
+        type: integer
+      loserUserId:
+        type: integer
+
+  Questionaire:
+    type: object
+    properties:
+      topicId:
+        type: integer
+      questionaireName:
+        type: string
+
+  QuestionItem:
+    type: object
+    properties:
+      questionaireId:
+        type: integer
+      content:
+        type: string
+      example:
+        type: string
+      case1:
+        type: string
+      case2:
+        type: string
+      case3:
+        type: string
+      case4:
+        type: string
+      answer:
+        type: integer
+  
+  User:
+    type: object
+    properties:
+      nickname: 
+        type: string
+      accessToken:
+        type: string
+      facebookUserId:
+        type: string
+      loginType:
+        type: string
+        enum: 
+          - "facebook"
+          - "signUp"
+      character:
+        type: string
+        enum: 
+          - "ow"
+          - "om" 
+          - "yw"   
+          - "ym"            
+      registraionId:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      name:
+        type: string
+      gender:
+        type: string
+      birth:
+        type: string
+      address:
+        type: string
+      phone:
+        type: string
+  
+  Transaction:
+    type: object
+    properties:
+      userId: 
+        type: string
+      star:
+        type: integer
+
+  ExampleBody:
+    type: object
+    title: example
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: The example name
+
+paths:
+  /problem:
+    get:
+      tags:
+        - Problem
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+    post:
+      tags:
+        - Problem
+      consumes:
+        - "multipart/form-data"
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: formData
+          name: appImage
+          type: file
+          description: The file to upload.
+        - in: query
+          name: email
+          type: string
+          description: email
+        - in: query
+          name: question
+          type: string
+          description: question
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+
+  /faq:
+    post:
+      tags:
+        - FAQ
+      description: "FAQ 를 생성함."
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "FAQ Object"
+          required: true
+          schema:
+            $ref: "#/definitions/FaqModel"
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+    get:
+      tags:
+        - FAQ
+      description: "FAQ 을 조회함."
+      consumes: 
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK!"
+        500:
+          description: "Exception"
+
+  /game:
+    get:
+      tags:
+        - Game
+      description: "Game 정보에 대한 리스트를 불러오기"
+      consumes: "application/json"
+      produces: "application/json"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+
+  /game/getRank:
+    get:
+      tags:
+        - Game
+      description: "게임 랭킹을 불러온다."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: rankType
+          type: string
+          description: The type of rank to return. 
+        - in: query
+          name: limit
+          type: integer
+          description: The numbers of items to return.
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+
+  /game/setResult:
+    post:
+      tags:
+        - Game
+      description: "게임 결과를 저장한다."
+      consumes: "application/json"
+      produces: "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Game Result Object"
+          required: true
+          schema:
+            $ref: "#/definitions/GameResult"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+
+  /game/{gameId}:
+    get:
+      tags:
+        - Game
+      description: "Game 정보를 가져옴."
+      consumes: "application/json"
+      produces: "application/json"
+      parameters:
+        - in: path
+          name: "gameId"
+          description: "Game Id"
+          required: true
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+
+  /game/createGame:
+    post:
+      tags:
+        - Game
+      description: "Game 을 생성함."
+      consumes: "application/json"
+      produces: "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Game Object"
+          required: true
+          schema:
+            $ref: "#/definitions/Game"
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+
+  /topic:
+    get:
+      tags:
+        - Topic
+      description: "Topic 목록을 가져온다."
+      consumes: "application/json"
+      produces: "application/json"
+      responses:
+        500:
+          description: "Exception!"
+        200:
+          description: "OK!"
+
+  /topic/createTopic:
+    post:
+      tags:
+        - Topic
+      description: "생성된 Game 에 Topic 을 생성한다."
+      consumes: "application/json"
+      produces: "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Topic Object"
+          required: true
+          schema: 
+            $ref: "#/definitions/Topic"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK!"
+
+  /questionaire:
+    get:
+      tags:
+        - Questionaire
+      description: 문제지 목록을 가져온다.
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "Ok!"
+
+  /questionaire/{questionaireId}:
+    get:
+      tags:
+        - Questionaire
+      description: 문제지의 모든 문제를 조회한다.
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: questionaireId
+          description: "질문지 Id"
+          required: true
+          type: integer
+        - in: query
+          description: "몇 개 불러올 것인지, 전부 부르고 싶으면 값을 비우면 됨."
+          name: limit
+          type: integer
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "Ok!"
+
+  /questionaire/create:
+    post:
+      tags:
+        - Questionaire
+      description: "Topic 에 문제지를 생성."
+      consumes: 
+        - "application/json"
+      produces: 
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Questionaire Object"
+          required: true
+          schema:
+            $ref: "#/definitions/Questionaire"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK!"
+
+  /questionaire/{userId}/{questionItemId}/answers:
+    post:
+      tags:
+        - Questionaire
+      description: "정답을 확인한다."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: userId
+          type: integer
+
+        - name: questionItemId
+          in: path
+          required: true
+          description: questionItemId
+          type: integer
+
+        - name: body
+          in: body
+          required: true
+          description: body
+          schema:
+            $ref: "#/definitions/Answer"
+      
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK!"
+
+  /questionaire/{questionaireId}/addQuestionItem:
+    post:
+      tags:
+        - Questionaire
+      description: "questionaireId 에 속하는 질문지에 문제를 추가한다."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: questionaireId
+          in: path
+          required: true
+          description: questionaireId
+          type: integer
+
+        - name: body
+          in: body
+          description: "QuestionItem Object"
+          required: true
+          schema:
+            $ref: "#/definitions/QuestionItem"
+      responses:
+        500:
+          description: "Exception!"
+        200: 
+          description: "OK!"
+
+  /user/join:
+    post:
+      tags:
+        - User
+      description: User Join Function
+      consumes: 
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User object"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+
+  /user/refreshToken:
+    put:
+      tags:
+        - User
+      description: User Token Refresh
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "Token Model"
+          schema:
+            $ref: "#/definitions/TokenModel"
+          
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+
+  /user/{userId}/heart:
+    put:
+      tags:
+        - User
+      description: User Using Heart
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The id of the entity to retrieve
+          type: integer
+          
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+        204:
+          description: "Heart is 0"
+
+  /user/{userId}/wrongAnswers:
+    get:
+      tags:
+        - User
+      description: userId 의 사용자가 잘못 풀은 최근 문제 50개를 불러온다.
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: userId
+          type: integer
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Exception"    
+
+  /user/{userId}/answers:
+    get:
+      tags:
+        - User
+      description: userId 의 사용자가 풀었던 문제들을 불러온다.
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: userId
+          type: integer
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Exception"
+
+  /user/star:
+    put:
+      tags:
+        - User
+      description: User Buy Star
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      
+      parameters:
+        - in: header
+          name: accessToken
+          description: "User AccessToken"
+          shcema:
+            type: string
+          required: true
+
+        - in: "body"
+          name: "body"
+          description: "User object"
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+
+  /user/{userId}:
+    get:
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The id of the entity to retrieve
+          type: integer
+      responses:
+        200:
+          description: Return the example with the specified id
+        404:
+          description: Example not 
+    put:
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: integer
+
+        - name: body
+          in: body
+          schema: 
+            $ref: "#/definitions/User"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+  
+  /user:
+    get:
+      tags: 
+        - User
+      description: 전체 유저의 데이터를 볼 수 있습니다.
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: OK
+    
+
+  /examples:
+    get:
+      tags:
+        - Examples
+      description: Fetch all examples
+      responses:
+        200:
+          description: Returns all examples
+    post:
+      tags:
+        - Examples
+      description: Create a new example
+      parameters:
+        - name: example
+          in: body
+          description: number of items to skip
+          required: true
+          schema: 
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        200:
+          description: Returns all examples
+
+  /examples/{id}:
+    get:
+      tags:
+        - Examples
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the entity to retrieve
+          type: integer
+      responses:
+        200:
+          description: Return the example with the specified id
+        404:
+          description: Example not 
+
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification

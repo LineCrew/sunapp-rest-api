@@ -1,0 +1,56 @@
+import Express from 'express';
+import Sequelize from './dbConfig';
+import * as path from 'path';
+import * as bodyParser from 'body-parser';
+import { ProblemEntity, FaqEntity, UserEntity, GameResultEntity, GameEntity, TopicEntity, QuestionaireEntity, QuestionItemEntity, UserAnswerEntity } from '../api/entity/';
+import * as http from 'http';
+import * as os from 'os';
+import cookieParser from 'cookie-parser';
+import swaggerify from './swagger';
+import l from './logger';
+import morgan from 'morgan';
+import ErrorHandler from './errorHandler';
+
+const app = new Express();
+
+export default class ExpressServer {
+  constructor() {
+    const root = path.normalize(`${__dirname}/../..`);
+    app.set('appPath', `${root}client`);
+    app.use(bodyParser.json());
+    app.use(ErrorHandler);
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(morgan('dev'));
+    app.use(cookieParser(process.env.SESSION_SECRET));
+    app.use('/', Express.static(path.join('./public')));
+  }
+
+  async syncSchema() {
+    if (process.env.SERVICE_LEVEL === 'develop') {
+      await UserEntity.sync();
+      await GameEntity.sync();
+      await TopicEntity.sync();
+      await QuestionaireEntity.sync();
+      await QuestionItemEntity.sync();
+      await UserAnswerEntity.sync();
+      await GameResultEntity.sync();
+      await FaqEntity.sync();
+      await ProblemEntity.sync();
+
+      l.info('database syncing done.');
+    }
+
+    return this;
+  }
+
+  async router(routes) {
+    await swaggerify(app, routes);
+    return this;
+  }
+
+  async listen(port = process.env.PORT) {
+    const welcome = p => () => l.info(`up and running in ${process.env.NODE_ENV || 'development'} @: ${os.hostname()} on port: ${p}}`);
+    await http.createServer(app).listen(port, welcome(port));
+    return app;
+  }
+}
