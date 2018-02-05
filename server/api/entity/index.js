@@ -7,6 +7,8 @@ import UserAnswerEntity from './UserAnswerEntity';
 import GameResultEntity from './GameResultEntity';
 import FaqEntity from './FaqEntity';
 import ProblemEntity from './ProblemEntity';
+import AdvertiseEntity from './AdvertiseEntity';
+import AdvertiseHistoryEntity from './AdvertiseHistoryEntity';
 
 /**
  * GameEntity -> TopicEntity -> QuestionaireEntity -> QuestionItemEntity 식으로 관계가 정의된다.
@@ -23,12 +25,16 @@ QuestionaireEntity.hasMany(QuestionItemEntity, { as: 'items' });
 
 UserEntity.hasMany(UserAnswerEntity, { as: 'userAnswers' });
 
+AdvertiseEntity.hasMany(AdvertiseHistoryEntity, { as: 'advertiseItem' });
+
 UserAnswerEntity.belongsTo(UserEntity, { as: 'users' });
 UserAnswerEntity.belongsTo(QuestionItemEntity, { as: 'items' });
 
 GameResultEntity.belongsTo(QuestionaireEntity, { as: 'questionaires' });
 GameResultEntity.belongsTo(UserEntity, { foreignKey: 'winnerUserId', as: 'winnerUser' });
 GameResultEntity.belongsTo(UserEntity, { foreignKey: 'loserUserId', as: 'loserUser' });
+
+AdvertiseHistoryEntity.belongsTo(UserEntity, { as: 'users' });
 
 module.exports = {
   UserEntity,
@@ -40,4 +46,6 @@ module.exports = {
   UserAnswerEntity,
   FaqEntity,
   ProblemEntity,
+  AdvertiseEntity,
+  AdvertiseHistoryEntity,
 };
