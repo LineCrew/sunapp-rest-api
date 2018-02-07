@@ -28,8 +28,8 @@ class Controller {
   }
   /**
    * 사용자가 잘못 답한 최근 문제 50개를 불러온다.
-   * @param {*} req 
-   * @param {*} res 
+   * @param {*} req
+   * @param {*} res
    */
   async getWrongAnswer(req, res) {
     try {
