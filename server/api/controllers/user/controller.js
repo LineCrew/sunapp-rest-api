@@ -98,18 +98,18 @@ class Controller {
    * @param {*} res
    */
   async post(req, res) {
-    const userModel = new UserModel(req.body);
-
     try {
+      const userModel = new UserModel(req.body);
+
       if (userModel.loginType === 'signUp') {
         userModel.accessToken = uuid();
       }
 
-      const result = await new DBService(UserEntity)
-        .create(userModel);
+      const result = await UserEntity.create(userModel);
 
       res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
+      console.log(e);
       res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
@@ -154,14 +154,15 @@ class Controller {
   async buyStar(req, res) {
     try {
       const starModel = new StarModel(req.body);
-      const userEntity = await new DBService(UserEntity)
-        .findById(starModel.userId);
+      const updatedUserEntity = await UserEntity.update({
+        star: starModel.star,
+      }, {
+        where: {
+          id: req.params.userId,
+        },
+      });
 
-      userEntity.star += starModel.star;
-
-      const result = await userEntity.save();
-
-      res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
+      res.send(200, new ApiResultModel({ statusCode: 200, message: starModel }));
     } catch (e) {
       res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
     }

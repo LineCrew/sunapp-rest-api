@@ -179,8 +179,6 @@ definitions:
   Transaction:
     type: object
     properties:
-      userId: 
-        type: string
       star:
         type: integer
 
@@ -557,6 +555,30 @@ paths:
         200:
           description: "OK"
 
+  /user/{userId}/star:
+    put:
+      tags:
+        - User
+      description: User Buy Star
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User object"
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+        
+        - name: userId
+          in: path
+          required: true
+          description: The id of the entity to retrieve
+          type: integer
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+
   /user/{userId}/heart:
     put:
       tags:
@@ -623,36 +645,6 @@ paths:
           description: "OK"
         500:
           description: "Exception"
-
-  /user/star:
-    put:
-      tags:
-        - User
-      description: User Buy Star
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      
-      parameters:
-        - in: header
-          name: accessToken
-          description: "User AccessToken"
-          shcema:
-            type: string
-          required: true
-
-        - in: "body"
-          name: "body"
-          description: "User object"
-          required: true
-          schema:
-            $ref: "#/definitions/Transaction"
-      responses:
-        500:
-          description: "Exception"
-        200:
-          description: "OK"
 
   /user/{userId}:
     get:
