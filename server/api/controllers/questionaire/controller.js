@@ -58,12 +58,14 @@ class Controller {
 
       // AnswerEntity 와 각 Entitiy 와의 관계를 맺음.
       await Promise.all([
-        generatedUserAnswerEntity.setItems(targetQuestionItemEntity),
+        generatedUserAnswerEntity.setItem(targetQuestionItemEntity),
+	generatedUserAnswerEntity.setUser(targetUserEntity),
         targetUserEntity.addUserAnswers(generatedUserAnswerEntity),
       ]);
 
       res.send(200, new ApiResultModel({ statusCode: 200, message: answerModel }));
     } catch (e) {
+      console.log(e);
       res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
     }
   }

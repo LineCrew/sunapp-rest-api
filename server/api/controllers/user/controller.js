@@ -33,14 +33,15 @@ class Controller {
    */
   async getWrongAnswer(req, res) {
     try {
+      console.log(req.params.userId)
       const targetUserAnswerEntity = await UserAnswerEntity.findAll({
-        include: [{
+        include: {
           model: UserEntity,
-          as: 'users',
+          as: 'user',
           where: { id: req.params.userId },
-        }],
+        },
         where: { isCorrect: false },
-        order: [['createdAt', 'DESC']],
+        order: [['created_at', 'DESC']],
         limit: 50,
       });
 

@@ -27,8 +27,8 @@ UserEntity.hasMany(UserAnswerEntity, { as: 'userAnswers' });
 
 AdvertiseEntity.hasMany(AdvertiseHistoryEntity, { as: 'advertiseItem' });
 
-UserAnswerEntity.belongsTo(UserEntity, { as: 'users' });
-UserAnswerEntity.belongsTo(QuestionItemEntity, { as: 'items' });
+UserAnswerEntity.belongsTo(UserEntity, { as: 'user' });
+UserAnswerEntity.belongsTo(QuestionItemEntity, { as: 'item' });
 
 GameResultEntity.belongsTo(QuestionaireEntity, { as: 'questionaires' });
 GameResultEntity.belongsTo(UserEntity, { foreignKey: 'winnerUserId', as: 'winnerUser' });

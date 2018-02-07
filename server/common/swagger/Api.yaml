@@ -81,7 +81,7 @@ definitions:
     properties:
       answer:
         type: integer
-      character:
+      gameType:
         type: string
         enum: 
           - "random"
