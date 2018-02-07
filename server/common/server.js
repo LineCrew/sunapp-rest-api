@@ -2,7 +2,19 @@ import Express from 'express';
 import Sequelize from './dbConfig';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
-import { ProblemEntity, FaqEntity, UserEntity, GameResultEntity, GameEntity, TopicEntity, QuestionaireEntity, QuestionItemEntity, UserAnswerEntity } from '../api/entity/';
+import {
+  ProblemEntity,
+  FaqEntity,
+  UserEntity,
+  GameResultEntity,
+  GameEntity,
+  TopicEntity,
+  QuestionaireEntity,
+  QuestionItemEntity,
+  UserAnswerEntity,
+  AdvertiseEntity,
+  AdvertiseHistoryEntity,
+} from '../api/entity/';
 import * as http from 'http';
 import * as os from 'os';
 import cookieParser from 'cookie-parser';
@@ -36,6 +48,8 @@ export default class ExpressServer {
       await GameResultEntity.sync();
       await FaqEntity.sync();
       await ProblemEntity.sync();
+      await AdvertiseEntity.sync();
+      await AdvertiseHistoryEntity.sync();
 
       l.info('database syncing done.');
     }

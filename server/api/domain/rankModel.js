@@ -1,4 +1,4 @@
-import { UserEntity, UserAnswerEntity, GameResultEntity } from "../entity";
+import { UserEntity, UserAnswerEntity, GameResultEntity } from '../entity';
 import sequelize from '../../common/dbConfig';
 
 const Op = sequelize.Op;

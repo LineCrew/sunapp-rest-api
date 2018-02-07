@@ -1,10 +1,9 @@
 import UserEntity from '../api/entity/UserEntity';
-import DBService from '../api/services/DbService';
 
 export default (async (req, res, next) => {
   try {
-    const result = await new DBService(UserEntity)
-      .find({ where: { accessToken: req.get('accessToken') } });
+    const result = await UserEntity
+      .findOne({ where: { accessToken: req.get('accessToken') } });
 
     if (result === null) throw new Error('Invalid AccessToken');
     else next(result);
