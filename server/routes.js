@@ -5,6 +5,7 @@ import topicRouter from './api/controllers/topic/router';
 import questionaireRouter from './api/controllers/questionaire/router';
 import faqRouter from './api/controllers/faq/router';
 import problemRouter from './api/controllers/problem/router';
+import advertiseRouter from './api/controllers/advertise/router';
 
 export default function routes(app) {
   app.use('/api/v1/examples', examplesRouter);
@@ -14,4 +15,5 @@ export default function routes(app) {
   app.use('/api/v1/questionaire', questionaireRouter);
   app.use('/api/v1/faq', faqRouter);
   app.use('/api/v1/problem', problemRouter);
+  app.use('/api/v1/advertise', advertiseRouter);
 }

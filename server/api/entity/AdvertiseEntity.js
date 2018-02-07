@@ -6,7 +6,7 @@ import sequelize from '../../common/dbConfig';
  */
 
 const AdvertiseEntity = sequelize.define('advertise', {
-  order: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
+  order: { type: DataTypes.INTEGER, allowNull: false, unique: true },
   advertiser: { type: DataTypes.STRING, allowNull: false },
   content: { type: DataTypes.STRING, allowNull: false },
   star: { type: DataTypes.INTEGER, allowNull: false },
