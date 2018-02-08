@@ -67,7 +67,7 @@ class Controller {
           as: 'userAnswers',
           include: {
             model: QuestionItemEntity,
-            as: 'items',
+            as: 'item',
           },
         }],
       });
