@@ -22,6 +22,7 @@ import swaggerify from './swagger';
 import l from './logger';
 import morgan from 'morgan';
 import ErrorHandler from './errorHandler';
+import morganBody from 'morgan-body';
 
 const app = new Express();
 
@@ -32,9 +33,9 @@ export default class ExpressServer {
     app.use(bodyParser.json());
     app.use(ErrorHandler);
     app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(morgan('dev'));
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use('/', Express.static(path.join('./public')));
+    morganBody(app);
   }
 
   async syncSchema() {
