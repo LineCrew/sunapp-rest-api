@@ -109,10 +109,10 @@ class Controller {
 
       const result = await UserEntity.create(userModel);
 
-      res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
       console.log(e);
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
@@ -164,9 +164,9 @@ class Controller {
         },
       });
 
-      res.send(200, new ApiResultModel({ statusCode: 200, message: starModel }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: starModel }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
@@ -183,14 +183,14 @@ class Controller {
       if (targetUserEntity.heart !== 0) {
         targetUserEntity.heart -= 2;
       } else if (targetUserEntity.heart === 0) {
-        res.send(200, new ApiResultModel({ statusCode: 200, message: { currentHeart: 0 } }));
+        res.status(200).send(new ApiResultModel({ statusCode: 200, message: { currentHeart: 0 } }));
       }
       await targetUserEntity.save();
 
-      res.send(200, new ApiResultModel(
+      res.status(200).send(new ApiResultModel(
         { statusCode: 200, message: { currentHeart: targetUserEntity.heart } }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
