@@ -237,7 +237,7 @@ paths:
             description: "Advertise object"
             required: true
             schema:
-              $ref: "#/definitions/Advertise"
+              $ref: "#/definitions/AdvertiseModel"
         responses:
           500:
             description: "Exception"
