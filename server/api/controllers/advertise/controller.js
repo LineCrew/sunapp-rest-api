@@ -1,5 +1,5 @@
 import { AdvertiseEntity, AdvertiseHistoryEntity } from '../../entity';
-import { AdvertiseModel, ApiResultModel } from '../../domain/advertiseModel';
+import { AdvertiseModel, ApiResultModel } from '../../domain';
 import sequelize from '../../../common/dbConfig';
 
 /**
