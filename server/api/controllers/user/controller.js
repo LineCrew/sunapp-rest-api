@@ -1,7 +1,6 @@
 import uuid from 'uuid/v4';
 import { UserEntity, UserAnswerEntity, QuestionItemEntity } from '../../entity/';
 import { UserModel, StarModel, ApiResultModel } from '../../domain';
-import DBService from '../../services/DbService';
 
 /**
  * Controller of User Domain.
@@ -9,8 +8,8 @@ import DBService from '../../services/DbService';
 class Controller {
   /**
    * 토큰 리프레쉬
-   * @param {*} req 
-   * @param {*} res 
+   * @param {*} req
+   * @param {*} res
    */
   async refreshAccessToken(req, res) {
     try {
@@ -39,9 +38,9 @@ class Controller {
           as: 'user',
           where: { id: req.params.userId },
         }, {
-	  model: QuestionItemEntity,
-	  as: 'item',
-	}],
+          model: QuestionItemEntity,
+          as: 'item',
+        }],
         where: { isCorrect: false },
         order: [['created_at', 'DESC']],
         limit: 50,
