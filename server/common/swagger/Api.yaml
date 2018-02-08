@@ -710,8 +710,8 @@ paths:
       responses:
         200:
           description: Return the example with the specified id
-        404:
-          description: Example not 
+        500:
+          description: KO!
     put:
       tags:
         - User

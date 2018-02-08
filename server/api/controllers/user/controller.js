@@ -126,9 +126,9 @@ class Controller {
       const result = await UserEntity
         .findById(req.params.userId);
 
-      res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: result }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
