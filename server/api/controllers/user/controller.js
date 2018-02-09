@@ -88,9 +88,9 @@ class Controller {
     try {
       const userModel = new UserModel(req.body);
       const result = await UserEntity.update(userModel, { where: { id: req.params.userId } });
-      res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 

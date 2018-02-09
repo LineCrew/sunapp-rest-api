@@ -1,6 +1,5 @@
 import { UserEntity, GameResultEntity, UserAnswerEntity, GameEntity, TopicEntity, QuestionaireEntity } from '../../entity/';
 import { ApiResultModel, GameModel, RankModel } from '../../domain/';
-import DBService from '../../services/DbService';
 
 /**
  * Controller of User Domain.
@@ -20,9 +19,9 @@ class Controller {
       await generatedGameResultEntity.setWinnerUser(winnerUserEntity);
       await generatedGameResultEntity.setLoserUser(loserUserEntity);
 
-      res.send(200, new ApiResultModel({ statusCode: 200 }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200 }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
@@ -69,9 +68,9 @@ class Controller {
           }],
         });
 
-      res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
@@ -85,9 +84,9 @@ class Controller {
 
     try {
       const result = await GameEntity.create(gameModel);
-      res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
@@ -109,9 +108,9 @@ class Controller {
           }],
         });
 
-      res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 }

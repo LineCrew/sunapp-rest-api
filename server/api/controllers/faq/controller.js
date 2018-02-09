@@ -14,9 +14,9 @@ class Controller {
     try {
       const faqModel = new FaqModel(req.body);
       const result = await FaqEntity.create(faqModel);
-      res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 

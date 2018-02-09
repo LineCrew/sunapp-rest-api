@@ -15,9 +15,9 @@ class Controller {
         }],
       });
 
-      res.send(200, new ApiResultModel({ statusCode: 200, message: targetTopicEntities }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: targetTopicEntities }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
@@ -33,9 +33,9 @@ class Controller {
 
       const result = await targetGameEntity.addTopics(generatedTopicEntity);
 
-      res.send(200, new ApiResultModel({ statusCode: 200, message: result }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 }
