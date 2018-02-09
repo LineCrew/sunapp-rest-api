@@ -40,7 +40,7 @@ GameResultEntity.belongsTo(UserEntity, { foreignKey: 'loserUserId', as: 'loserUs
 AdvertiseHistoryEntity.belongsTo(UserEntity, { as: 'users' });
 
 // UserEntity.hasMany(StuffEntity, { as:  })
-GivenStuffEntity.belongsTo(StuffEntity, { as: stuffEntity });
+GivenStuffEntity.belongsTo(StuffEntity, { as: 'stuff' });
 
 module.exports = {
   UserEntity,
