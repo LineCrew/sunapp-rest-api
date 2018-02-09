@@ -32,7 +32,7 @@ export default class RankModel {
       });
 
       return result;
-    } else if (this.rankType === 'point') {
+    } else if (this.rankType === 'single') {
       // TODO: UserAnswerEntity -> User 로 관계를 바꿔야함.
       const result = UserAnswerEntity.findAll({
         attributes: { include: [[sequelize.fn('COUNT', sequelize.col('users.id')), 'answerCount']] },
