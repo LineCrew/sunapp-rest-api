@@ -31,10 +31,6 @@ export default class RankModel {
       const targetRankEntities = await sequelize.query(`select *, count(*) as answerCount, user_id from answers as a left outer join users as u on u.id = a.user_id where a.created_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() and a.isCorrect = true and a.gameType = '${this.rankType}' group by user_id order by answerCount asc;`);
 
       return targetRankEntities[0];
-
-    } else if (this.rankType === 'friend') {
-      const result = UserEntity.findAll({
-      });
     }
   }
 }
