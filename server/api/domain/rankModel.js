@@ -1,9 +1,6 @@
 import { UserEntity, UserAnswerEntity, GameResultEntity } from '../entity';
 import sequelize from '../../common/dbConfig';
 
-const Op = sequelize.Op;
-const week = 24 * 60 * 60 * 1000 * 7;
-
 export default class RankModel {
   constructor(data = {}) {
     this.rankType = data.rankType;
