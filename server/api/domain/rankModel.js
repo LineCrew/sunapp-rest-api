@@ -1,4 +1,3 @@
-import { UserEntity, UserAnswerEntity, GameResultEntity } from '../entity';
 import sequelize from '../../common/dbConfig';
 
 export default class RankModel {

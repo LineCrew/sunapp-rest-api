@@ -223,27 +223,6 @@ paths:
           description: "Exception"
         200:
           description: "OK!"
-      post:
-        tags:
-          - Advertise
-        consumes:
-          - "multipart/form-data"
-          - "application/json"
-        produces:
-          - "application/json"
-        parameters:
-          - in: "body"
-            name: "body"
-            description: "Advertise object"
-            required: true
-            schema:
-              $ref: "#/definitions/AdvertiseModel"
-        responses:
-          500:
-            description: "Exception"
-          200:
-            description: "OK"
-        
   /problem:
     get:
       tags:
@@ -316,8 +295,6 @@ paths:
       tags:
         - Game
       description: "Game 정보에 대한 리스트를 불러오기"
-      consumes: "application/json"
-      produces: "application/json"
       responses:
         500:
           description: "Exception"
@@ -353,8 +330,6 @@ paths:
       tags:
         - Game
       description: "게임 결과를 저장한다."
-      consumes: "application/json"
-      produces: "application/json"
       parameters:
         - in: "body"
           name: "body"
@@ -373,13 +348,12 @@ paths:
       tags:
         - Game
       description: "Game 정보를 가져옴."
-      consumes: "application/json"
-      produces: "application/json"
       parameters:
         - in: path
-          name: "gameId"
-          description: "Game Id"
+          name: gameId
+          description: "gameId"
           required: true
+          type: integer
       responses:
         500:
           description: "Exception"
@@ -391,8 +365,6 @@ paths:
       tags:
         - Game
       description: "Game 을 생성함."
-      consumes: "application/json"
-      produces: "application/json"
       parameters:
         - in: "body"
           name: "body"
@@ -411,8 +383,6 @@ paths:
       tags:
         - Topic
       description: "Topic 목록을 가져온다."
-      consumes: "application/json"
-      produces: "application/json"
       responses:
         500:
           description: "Exception!"
@@ -424,8 +394,6 @@ paths:
       tags:
         - Topic
       description: "생성된 Game 에 Topic 을 생성한다."
-      consumes: "application/json"
-      produces: "application/json"
       parameters:
         - in: "body"
           name: "body"
@@ -587,11 +555,6 @@ paths:
       tags:
         - User
       description: User Token Refresh
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      
       parameters:
         - in: "body"
           name: "body"
@@ -740,47 +703,7 @@ paths:
         500:
           description: "Exception"
         200:
-          description: OK
-    
-
-  /examples:
-    get:
-      tags:
-        - Examples
-      description: Fetch all examples
-      responses:
-        200:
-          description: Returns all examples
-    post:
-      tags:
-        - Examples
-      description: Create a new example
-      parameters:
-        - name: example
-          in: body
-          description: number of items to skip
-          required: true
-          schema: 
-            $ref: "#/definitions/ExampleBody"
-      responses:
-        200:
-          description: Returns all examples
-
-  /examples/{id}:
-    get:
-      tags:
-        - Examples
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The id of the entity to retrieve
-          type: integer
-      responses:
-        200:
-          description: Return the example with the specified id
-        404:
-          description: Example not 
+          description: OK 
 
   /spec:
     get:
