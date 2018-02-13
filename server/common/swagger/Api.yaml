@@ -528,6 +528,24 @@ paths:
         200: 
           description: "OK!"
 
+  /user/getPlayers:
+    get:
+      tags:
+        - User
+      description: fetch player information
+      parameters:
+        - in: query
+          name: me
+          required: true
+        - in: query
+          name: opponent
+          required: true
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "KO!"
+
   /user/join:
     post:
       tags:

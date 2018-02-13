@@ -194,8 +194,22 @@ class Controller {
     }
   }
 
-  async all(req, res, next) {
-    res.send('Hello World');
+  /**
+   * 게임 플레이 도중 상대방과 나, 각각의 사용자 정보를 렌더링할 때 사용되는 API
+   * @param {*} req
+   * @param {*} res
+   */
+  async getPlayers(req, res) {
+    try {
+      const targetPlayersEntity = await Promise.all([
+        UserEntity.findById(req.query.me),
+        UserEntity.findById(req.query.opponent),
+      ]);
+      
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: targetPlayersEntity }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
   }
 }
 
