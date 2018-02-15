@@ -21,6 +21,7 @@ import cookieParser from 'cookie-parser';
 import swaggerify from './swagger';
 import l from './logger';
 import morgan from 'morgan';
+import cors from 'cors';
 import ErrorHandler from './errorHandler';
 import morganBody from 'morgan-body';
 
@@ -31,6 +32,7 @@ export default class ExpressServer {
     const root = path.normalize(`${__dirname}/../..`);
     app.set('appPath', `${root}client`);
     app.use(bodyParser.json());
+    app.use(cors());
     app.use(ErrorHandler);
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cookieParser(process.env.SESSION_SECRET));

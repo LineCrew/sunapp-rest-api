@@ -42,6 +42,8 @@ AdvertiseHistoryEntity.belongsTo(UserEntity, { as: 'users' });
 // UserEntity.hasMany(StuffEntity, { as:  })
 GivenStuffEntity.belongsTo(StuffEntity, { as: 'stuff' });
 
+// TODO: 사용자 -> 친구 (hasMany) 친구 -> 사용자 (belongsTo) 추가할 것
+
 module.exports = {
   UserEntity,
   GameEntity,
