@@ -14,6 +14,7 @@ import {
   UserAnswerEntity,
   AdvertiseEntity,
   AdvertiseHistoryEntity,
+  UserQuestionEntity,
 } from '../api/entity/';
 import * as http from 'http';
 import * as os from 'os';
@@ -53,6 +54,7 @@ export default class ExpressServer {
       await ProblemEntity.sync();
       await AdvertiseEntity.sync();
       await AdvertiseHistoryEntity.sync();
+      await UserQuestionEntity.sync();
 
       l.info('database syncing done.');
     }

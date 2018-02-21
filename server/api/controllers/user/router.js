@@ -6,6 +6,7 @@ export default express
   .Router()
   .get('/', controller.getAllUser)
   .get('/getPlayers', controller.getPlayers)
+  .get('/question', controller.getUserQuestionEntity)
   .get('/:userId', controller.getById)
   .get('/:userId/answers', controller.getUserAnsweredList)
   .get('/:userId/wrongAnswers', controller.getWrongAnswer)
@@ -13,4 +14,5 @@ export default express
   .put('/:userId/star', controller.buyStar)
   .put('/refreshToken', controller.refreshAccessToken)
   .put('/:userId/heart', controller.doHeart)
-  .post('/join', controller.post);
+  .post('/join', controller.post)
+  .post('/question', controller.createUserQuestionEntity);

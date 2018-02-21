@@ -1,5 +1,5 @@
 import uuid from 'uuid/v4';
-import { UserEntity, UserAnswerEntity, QuestionItemEntity } from '../../entity/';
+import { UserEntity, UserAnswerEntity, QuestionItemEntity, UserQuestionEntity } from '../../entity/';
 import { UserModel, StarModel, ApiResultModel } from '../../domain';
 
 /**
@@ -205,10 +205,53 @@ class Controller {
         UserEntity.findById(req.query.me),
         UserEntity.findById(req.query.opponent),
       ]);
-      
+
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: targetPlayersEntity }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 사용자 질문 생성하기
+   */
+  async createUserQuestionEntity(req, res) {
+    try {
+      const generatedUserQuestionEntity = await UserQuestionEntity.create({
+        content: req.body.content,
+      });
+
+      const targetUserEntity = await UserEntity.findById(req.body.userId);
+
+      await generatedUserQuestionEntity.setUser(targetUserEntity);
+      res.status(200).send(new ApiResultModel(
+        { statusCode: 200, message: { generatedUserQuestionEntity, targetUserEntity } }),
+      );
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 200, message: e }));
+    }
+  }
+
+  /**
+   * 모든 사용자 질문 목록 가져오기
+   * @param {*} req 
+   * @param {*} res 
+   */
+  async getUserQuestionEntity(req, res) {
+    try {
+      const targetUserQuestionEntities = await UserQuestionEntity.findAll({
+        include: {
+          model: UserEntity,
+          as: 'user',
+        },
+      });
+
+      console.log('Hello World')
+      res.status(200).send(new ApiResultModel(
+        { statusCode: 200, message: targetUserQuestionEntities },
+      ));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 200, message: e }));
     }
   }
 }

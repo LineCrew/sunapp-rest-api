@@ -202,6 +202,14 @@ definitions:
     properties:
       star:
         type: integer
+  
+  UserQuestionItem:
+    type: object
+    properties:
+      userId:
+        type: integer
+      content:
+        type: string
 
   ExampleBody:
     type: object
@@ -543,6 +551,32 @@ paths:
       responses:
         200:
           description: "OK"
+        500:
+          description: "KO!"
+
+  /user/question:
+    post:
+      tags:
+        - User
+      description: Create User Question
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserQuestionItem"
+      responses:
+        200:
+          description: "OK!"
+        500:
+          description: "KO!"
+    get:
+      tags:
+        - User
+      description: Fetch all user questions
+      responses:
+        200:
+          description: "OK!"
         500:
           description: "KO!"
 
