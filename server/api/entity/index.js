@@ -11,7 +11,7 @@ import AdvertiseEntity from './AdvertiseEntity';
 import AdvertiseHistoryEntity from './AdvertiseHistoryEntity';
 import StuffEntity from './StuffEntity';
 import GivenStuffEntity from './GivenStuffEntity';
-import stuffEntity from './StuffEntity';
+import UserQuestionEntity from './UserQuestionEntity';
 
 /**
  * GameEntity -> TopicEntity -> QuestionaireEntity -> QuestionItemEntity 식으로 관계가 정의된다.
@@ -42,6 +42,8 @@ AdvertiseHistoryEntity.belongsTo(UserEntity, { as: 'users' });
 // UserEntity.hasMany(StuffEntity, { as:  })
 GivenStuffEntity.belongsTo(StuffEntity, { as: 'stuff' });
 
+UserQuestionEntity.belongsTo(UserEntity, { as: 'user' });
+
 // TODO: 사용자 -> 친구 (hasMany) 친구 -> 사용자 (belongsTo) 추가할 것
 
 module.exports = {
@@ -56,4 +58,5 @@ module.exports = {
   ProblemEntity,
   AdvertiseEntity,
   AdvertiseHistoryEntity,
+  UserQuestionEntity,
 };
