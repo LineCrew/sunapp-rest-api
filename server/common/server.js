@@ -15,6 +15,7 @@ import {
   AdvertiseEntity,
   AdvertiseHistoryEntity,
   UserQuestionEntity,
+  ReceiptEntity,
 } from '../api/entity/';
 import * as http from 'http';
 import * as os from 'os';
@@ -55,6 +56,7 @@ export default class ExpressServer {
       await AdvertiseEntity.sync();
       await AdvertiseHistoryEntity.sync();
       await UserQuestionEntity.sync();
+      await ReceiptEntity.sync();
 
       l.info('database syncing done.');
     }
