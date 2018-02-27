@@ -246,10 +246,27 @@ class Controller {
         },
       });
 
-      console.log('Hello World')
       res.status(200).send(new ApiResultModel(
         { statusCode: 200, message: targetUserQuestionEntities },
       ));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 200, message: e }));
+    }
+  }
+
+  /**
+   * 회원 탈퇴
+   * @param {*} req
+   * @param {*} res
+   */
+  async userWithdrawal(req, res) {
+    try {
+      const deletedUserEntity = await UserEntity.destroy({ where: { id: req.params.userId }});
+
+      res.status(200).send(new ApiResultModel({
+        statusCode: 200,
+        message: deletedUserEntity,
+      }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 200, message: e }));
     }

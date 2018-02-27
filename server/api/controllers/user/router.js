@@ -15,4 +15,5 @@ export default express
   .put('/refreshToken', controller.refreshAccessToken)
   .put('/:userId/heart', controller.doHeart)
   .post('/join', controller.post)
-  .post('/question', controller.createUserQuestionEntity);
+  .post('/question', controller.createUserQuestionEntity)
+  .delete('/:userId/withdrawal', controller.userWithdrawal);

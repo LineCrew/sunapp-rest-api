@@ -580,6 +580,21 @@ paths:
         500:
           description: "KO!"
 
+  /user/{userId}/withdrawal:
+    delete:
+      tags:
+        - User
+      description: User Withdrawal
+      parameters:
+        - in: path
+          name: userId
+          description: userId
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+          
   /user/join:
     post:
       tags:
