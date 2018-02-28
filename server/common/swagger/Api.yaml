@@ -30,6 +30,14 @@ produces:
   - application/json
 
 definitions:
+  FriendsModel:
+    type: object
+    properties:
+      facebookUserIds:
+        type: array
+        items:
+          type: string
+
   AdvertiseModel:
     type: object
     properties:
