@@ -6,6 +6,21 @@ import { ApiResultModel, GameModel, RankModel } from '../../domain/';
  */
 class Controller {
   /**
+   * 사용자 게임 플레이 전적 조회
+   * @param {*} req
+   * @param {*} res
+   */
+  async getUserPlayingHistory(req, res) {
+    try {
+      const rankModel = new RankModel();
+      const response = await rankModel.getUserPlayingHistory(req.params.userId);
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: response }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
    * 게임 결과를 저장한다.
    * @param {*} req 
    * @param {*} res 

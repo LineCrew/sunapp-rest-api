@@ -6,6 +6,7 @@ export default express
   .Router()
   .get('/', controller.getAllGameList)
   .get('/getRank', controller.getGameRank)
+  .get('/:userId/history', controller.getUserPlayingHistory)
   .get('/:gameId', controller.getGameById)
   .post('/createGame', controller.post)
   .post('/game/setResult', controller.setGameResult);

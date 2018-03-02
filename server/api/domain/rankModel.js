@@ -11,14 +11,7 @@ export default class RankModel {
   async getRankByType(state = {}) {
     if (this.rankType === 'gameResult') {
       const targetRankEntities = await sequelize.query(
-        `select 
-          *, 
-          count(*) as winCount 
-        from gameResult as g 
-        left outer users as u.id = g.winnerUserId 
-        where a.created_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() 
-        group by g.winnerUserId 
-        order by winCount asc`,
+        'select *, count(*) as winCount from gameResults as g left outer join users as u on u.id = g.winnerUserId where g.created_at BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() group by g.winnerUserId order by winCount asc;',
       );
 
       return targetRankEntities[0];
@@ -28,5 +21,26 @@ export default class RankModel {
 
       return targetRankEntities[0];
     }
+  }
+
+  /**
+   * 사용자의 전적 조회 함수
+   * @param {*} userId
+   */
+  async getUserPlayingHistory(userId) {
+    const targetWinHistoryEntity = await sequelize.query(
+      `select count(*) as winCount from gameResults as g left outer join users as u on u.id = g.winnerUserId where g.winnerUserId = ${userId} group by g.winnerUserId;`,
+    );
+
+    const targetLoseHistoryEntity = await sequelize.query(
+      `select count(*) as loseCount from gameResults as g left outer join users as u on u.id = g.loserUserId where g.loserUserId = ${userId} group by g.loserUserId;`,
+    );
+
+    const response = {
+      winHistory: targetWinHistoryEntity,
+      loseHistory: targetLoseHistoryEntity,
+    };
+
+    return response;
   }
 }

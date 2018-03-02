@@ -317,6 +317,22 @@ paths:
         200:
           description: "OK"
 
+  /game/{userId}/history:
+    get:
+      tags:
+        - Game
+      description: "사용자 게임 플레이 전적 조회"
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
   /game/getRank:
     get:
       tags:
