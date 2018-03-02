@@ -36,7 +36,7 @@ definitions:
       facebookUserIds:
         type: array
         items:
-          type: string
+          type: integer
 
   AdvertiseModel:
     type: object
@@ -618,7 +618,40 @@ paths:
           description: "KO!"
         200:
           description: "OK!"
-          
+  
+  /user/{userId}/friends:
+    get:
+      tags:
+        - User
+      description: fetching friend of user
+      parameters:
+        - in: path
+          name: userId
+      responses:
+        200: 
+          description: "OK!"
+        500:
+          description: "KO!"
+
+  /user/{userId}/syncFacebookFriends:
+    post:
+      tags:
+        - User
+      description: Syncing the Frineds who are using Facebook Social Login
+      parameters:
+        - in: path
+          name: userId
+
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/FriendsModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+        
   /user/join:
     post:
       tags:

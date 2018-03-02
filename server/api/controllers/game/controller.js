@@ -22,8 +22,8 @@ class Controller {
 
   /**
    * 게임 결과를 저장한다.
-   * @param {*} req 
-   * @param {*} res 
+   * @param {*} req
+   * @param {*} res
    */
   async setGameResult(req, res) {
     try {

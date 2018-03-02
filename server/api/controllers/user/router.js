@@ -16,4 +16,6 @@ export default express
   .put('/:userId/heart', controller.doHeart)
   .post('/join', controller.post)
   .post('/question', controller.createUserQuestionEntity)
-  .delete('/:userId/withdrawal', controller.userWithdrawal);
+  .post('/:userId/syncFacebookFriends', controller.syncFacebookFriends)
+  .delete('/:userId/withdrawal', controller.userWithdrawal)
+  .get('/:userId/friends', controller.getFriends);
