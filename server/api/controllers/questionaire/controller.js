@@ -15,18 +15,10 @@ class Controller {
    */
   async getQuestionItemsById(req, res) {
     try {
-      const targetQuestionaireEntity = await QuestionaireEntity
-        .findById(req.params.questionaireId, {
-          include: [{
-            model: QuestionItemEntity,
-            as: 'items',
-            order: [sequelize.fn('RAND')],
-            limit: req.query.limit,
-          }],
-        });
+      const result = await sequelize.query(`select qi.id as questionItemId, qi.questionaire_id as questionaireId, qi.content, qi.example, qi.case1, qi.case2, qi.case3, qi.case4, qi.answer,qi.limitTime from questionItems as qi inner join questionaires as q on qi.questionaire_id = q.id where qi.questionaire_id = ${req.params.questionaireId} order by rand() limit 5;`);
 
       res.status(200).send(
-        new ApiResultModel({ statusCode: 200, message: targetQuestionaireEntity }),
+        new ApiResultModel({ statusCode: 200, message: result[0] }),
       );
     } catch (e) {
       res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
