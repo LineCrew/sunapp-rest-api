@@ -9,6 +9,7 @@ import AnswerModel from './answerModel';
 import RankModel from './rankModel';
 import GamePlayingRequestModel from './gamePlayingRequestModel';
 import FaqModel from './faqModel';
+import StuffModel from './stuffModel';
 
 module.exports = {
   ApiResultModel,
@@ -22,4 +23,5 @@ module.exports = {
   RankModel,
   GamePlayingRequestModel,
   FaqModel,
+  StuffModel,
 };

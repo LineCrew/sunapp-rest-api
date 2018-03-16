@@ -41,17 +41,12 @@ GameResultEntity.belongsTo(UserEntity, { foreignKey: 'loserUserId', as: 'loserUs
 
 AdvertiseHistoryEntity.belongsTo(UserEntity, { as: 'users' });
 
-// UserEntity.hasMany(StuffEntity, { as:  })
+UserEntity.hasMany(GivenStuffEntity, { as: 'givenStuffs' });
 GivenStuffEntity.belongsTo(StuffEntity, { as: 'stuff' });
 
 UserQuestionEntity.belongsTo(UserEntity, { as: 'user' });
 
 ReceiptEntity.belongsTo(UserEntity, { as: 'user' });
-
-// TODO: 사용자 -> 친구 (hasMany) 친구 -> 사용자 (belongsTo) 추가할 것
-
-// UserEntity.hasMany(FriendEntity, { as: 'friends' });
-// FriendEntity.belongsTo(UserEntity, { as: 'user' });
 
 FriendEntity.belongsTo(UserEntity, { foreignKey: 'friendId', as: 'friend' });
 FriendEntity.belongsTo(UserEntity, { foreignKey: 'userId', as: 'user' });
@@ -71,4 +66,6 @@ module.exports = {
   UserQuestionEntity,
   ReceiptEntity,
   FriendEntity,
+  StuffEntity,
+  GivenStuffEntity,
 };

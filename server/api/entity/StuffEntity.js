@@ -3,8 +3,9 @@ import sequelize from '../../common/dbConfig';
 
 const stuffEntity = sequelize.define('stuffs', {
   subject: { type: DataTypes.STRING },
+  imageUrl: { type: DataTypes.STRING },
   description: { type: DataTypes.STRING },
-  condition: { type: DataTypes.INTEGER },
+  isActive: { type: DataTypes.BOOLEAN },
 });
 
 export default stuffEntity;

@@ -23,6 +23,8 @@ tags:
     description: The swagger API specification
   - name: Advertise
     description: Advertise Endpoint
+  - name: Stuff
+    description: Stuff Endpoint
 
 consumes:
   - application/json
@@ -30,6 +32,22 @@ produces:
   - application/json
 
 definitions:
+  StuffModel:
+    type: object
+    properties: 
+      subject:
+        type: string
+        description: "상품 이름"
+      imageUrl:
+        type: string
+        description: "상품 이미지 URL"
+      description:
+        type: string
+        description: "상품 설명"
+      isActive:
+        type: boolean
+        description: "상품 활성화 여부"
+
   FriendsModel:
     type: object
     properties:
@@ -230,6 +248,34 @@ definitions:
         description: The example name
 
 paths:
+  /stuff:
+    get:
+      tags:
+        - Stuff 
+      parameters:
+        - in: query
+          name: isActive
+          type: boolean
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+    post:
+      tags:
+        - Stuff
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/StuffModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK"
+
   /advertise:
     get:
       tags:
