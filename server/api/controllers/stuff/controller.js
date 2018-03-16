@@ -15,11 +15,10 @@ import {
  * 상품 추가, 상품 지급 (자동 지급이 아닌 관리자의 수작업을 통한 지급), 상품 지급 히스토리 기록, 상품 정보 가져오기
  */
 class Controller {
-
   /**
    * 사용자에게 지급하고자하는 상품을 생성합니다.
    * @param {*} req
-   * @param {*} res 
+   * @param {*} res
    */
   async createStuffEntity(req, res) {
     try {
@@ -94,14 +93,11 @@ class Controller {
         },
       });
 
-      console.log(targetUserEntity);
+      res.status(200).send(new ApiResultModel({ statuscode: 200, message: targetUserEntity }));
     } catch (e) {
-      console.log(e);
-      
-    }
-      
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }   
   }
-
 }
 
 export default new Controller();

@@ -255,6 +255,7 @@ paths:
       parameters:
         - in: query
           name: isActive
+          description: "상품의 활성화 여부"
           type: boolean
       responses:
         500:
@@ -275,6 +276,37 @@ paths:
           description: "KO!"
         200:
           description: "OK"
+
+  /stuff/{userId}/pay:
+    get:
+      tags:
+        - Stuff
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+  
+  /stuff/{userId}/{stuffId}/pay:
+    post:
+      tags:
+        - Stuff
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+        - in: path
+          name: stuffId
+          type: integer
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
 
   /advertise:
     get:

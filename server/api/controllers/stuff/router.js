@@ -5,6 +5,6 @@ import controller from './controller';
 export default express
   .Router()
   .get('/', controller.getStuffEntities)
-  .get('/pay', controller.getPayedStuffEntities)
+  .get('/:userId/pay', controller.getPayedStuffEntities)
   .post('/', controller.createStuffEntity)
-  .post('/pay', controller.payStuffEntity);
+  .post('/:userId/:stuffId/pay', controller.payStuffEntity);
