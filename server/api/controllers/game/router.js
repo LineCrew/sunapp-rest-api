@@ -8,5 +8,7 @@ export default express
   .get('/getRank', controller.getGameRank)
   .get('/:userId/history', controller.getUserPlayingHistory)
   .get('/:gameId', controller.getGameById)
+  .get('/:userId/playingHistory', controller.getPlayingHistory)
   .post('/createGame', controller.post)
-  .post('/game/setResult', controller.setGameResult);
+  .post('/game/setResult', controller.setGameResult)
+  .post('/playingHistory', controller.setPlayingHistory);

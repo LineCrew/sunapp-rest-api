@@ -14,6 +14,7 @@ import GivenStuffEntity from './GivenStuffEntity';
 import UserQuestionEntity from './UserQuestionEntity';
 import ReceiptEntity from './ReceiptEntity';
 import FriendEntity from './FriendEntity';
+import PlayingHistoryEntity from './PlayingHistoryEntity';
 
 /**
  * GameEntity -> TopicEntity -> QuestionaireEntity -> QuestionItemEntity 식으로 관계가 정의된다.
@@ -51,6 +52,9 @@ ReceiptEntity.belongsTo(UserEntity, { as: 'user' });
 FriendEntity.belongsTo(UserEntity, { foreignKey: 'friendId', as: 'friend' });
 FriendEntity.belongsTo(UserEntity, { foreignKey: 'userId', as: 'user' });
 
+PlayingHistoryEntity.belongsTo(UserEntity, { as: 'user' });
+PlayingHistoryEntity.belongsTo(QuestionaireEntity, { as: 'questionaire' });
+
 module.exports = {
   UserEntity,
   GameEntity,
@@ -68,4 +72,5 @@ module.exports = {
   FriendEntity,
   StuffEntity,
   GivenStuffEntity,
+  PlayingHistoryEntity,
 };

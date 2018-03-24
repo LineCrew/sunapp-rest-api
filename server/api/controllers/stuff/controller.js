@@ -55,7 +55,9 @@ class Controller {
    */
   async payStuffEntity(req, res) {
     try {
-      const targetStuffEntity = await StuffEntity.findById(req.params.stuffId);
+      const targetStuffEntity = await StuffEntity.findById(req.params.stuffId, {
+        where: { isActive: true },
+      });
       const targetUserEntity = await UserEntity.findById(req.params.userId);
       const generatedGivenStuffEntity = await GivenStuffEntity.create();
 
@@ -96,7 +98,7 @@ class Controller {
       res.status(200).send(new ApiResultModel({ statuscode: 200, message: targetUserEntity }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
-    }   
+    }
   }
 }
 

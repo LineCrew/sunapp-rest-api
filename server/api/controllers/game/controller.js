@@ -1,9 +1,14 @@
-import { UserEntity, GameResultEntity, UserAnswerEntity, GameEntity, TopicEntity, QuestionaireEntity } from '../../entity/';
+import {
+  UserEntity,
+  GameResultEntity,
+  GameEntity,
+  TopicEntity,
+  QuestionaireEntity,
+  PlayingHistoryEntity,
+} from '../../entity/';
 import { ApiResultModel, GameModel, RankModel } from '../../domain/';
+import sequelize from '../../../common/dbConfig';
 
-/**
- * Controller of User Domain.
- */
 class Controller {
   /**
    * 사용자 게임 플레이 전적 조회
@@ -35,6 +40,46 @@ class Controller {
       await generatedGameResultEntity.setLoserUser(loserUserEntity);
 
       res.status(200).send(new ApiResultModel({ statusCode: 200 }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 플레이 기록 저장하기
+   * @param {*} req
+   * @param {*} res
+   */
+  async setPlayingHistory(req, res) {
+    try {
+      const targetUserEntity = await UserEntity.findById(req.body.userId);
+      const targetQuestionaireEntity = await QuestionaireEntity.findById(req.body.questionaireId);
+
+      const generatedPlayingHistoryEntity = await PlayingHistoryEntity.create();
+      await generatedPlayingHistoryEntity.setUser(targetUserEntity);
+      await generatedPlayingHistoryEntity.setQuestionaire(targetQuestionaireEntity);
+
+      res.status(200).send(new ApiResultModel(
+        { statusCode: 200, message: {
+          targetUserEntity,
+          targetQuestionaireEntity,
+          generatedPlayingHistoryEntity,
+        },
+        }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 플레이 기록 가져오기
+   * @param {*} req
+   * @param {*} res
+   */
+  async getPlayingHistory(req, res) {
+    try {
+      const targetPlayingHistoryEntity = await sequelize.query(`select * from playingHistories as p left outer join questionaires as q on q.id = p.questionaire_id where p.user_id = ${req.params.userId} order by p.created_at desc limit 10;`);
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: targetPlayingHistoryEntity[0] }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }

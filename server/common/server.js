@@ -19,6 +19,7 @@ import {
   FriendEntity,
   StuffEntity,
   GivenStuffEntity,
+  PlayingHistoryEntity,
 } from '../api/entity/';
 import * as http from 'http';
 import * as os from 'os';
@@ -63,6 +64,7 @@ export default class ExpressServer {
       await FriendEntity.sync();
       await StuffEntity.sync();
       await GivenStuffEntity.sync();
+      await PlayingHistoryEntity.sync();
 
       l.info('database syncing done.');
     }

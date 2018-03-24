@@ -32,6 +32,16 @@ produces:
   - application/json
 
 definitions:
+  GamePlayingHistoryModel:
+    type: object
+    properties: 
+      userId:
+        type: integer
+        description: "userId"
+      questionaireId:
+        type: integer
+        description: "questionaireId"
+
   StuffModel:
     type: object
     properties: 
@@ -434,6 +444,38 @@ paths:
           description: "Exception"
         200:
           description: "OK"
+
+  /game/playingHistory:
+    post:
+      tags:
+        - Game
+      description: "게임 플레잉 기록을 저장한다."
+      parameters:
+        - in: body
+          name: body
+          description: "PlayingHistory Object"
+          schema:
+            $ref: "#/definitions/GamePlayingHistoryModel"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK!"
+
+  /game/{userId}/playingHistory:
+    get:
+      tags:
+        - Game
+      description: "게임 플레잉 기록을 가져온다."
+      parameters:
+        - in: path
+          name: userId
+          description: "userId"
+      responses:
+        500:
+          description: "Exception!"
+        200:
+          description: "OK!"
 
   /game/setResult:
     post:
