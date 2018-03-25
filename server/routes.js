@@ -7,6 +7,7 @@ import faqRouter from './api/controllers/faq/router';
 import problemRouter from './api/controllers/problem/router';
 import advertiseRouter from './api/controllers/advertise/router';
 import stuffRouter from './api/controllers/stuff/router';
+import fcmRouter from './api/controllers/fcm/router';
 
 export default function routes(app) {
   app.use('/api/v1/examples', examplesRouter);
@@ -18,4 +19,5 @@ export default function routes(app) {
   app.use('/api/v1/problem', problemRouter);
   app.use('/api/v1/advertise', advertiseRouter);
   app.use('/api/v1/stuff', stuffRouter);
+  app.use('/api/v1/fcm', fcmRouter);
 }

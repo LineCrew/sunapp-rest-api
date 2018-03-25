@@ -3,4 +3,5 @@ import controller from './controller';
 
 
 export default express
-  .Router();
+  .Router()
+  .post('/sendToAllDevice', controller.sendToAllDevice);

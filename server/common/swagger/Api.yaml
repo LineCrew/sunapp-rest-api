@@ -25,6 +25,8 @@ tags:
     description: Advertise Endpoint
   - name: Stuff
     description: Stuff Endpoint
+  - name: FCM
+    description: FCM!
 
 consumes:
   - application/json
@@ -32,6 +34,16 @@ produces:
   - application/json
 
 definitions:
+  MessagePayloadModel:
+    type: object
+    properties:
+      title:
+        type: string
+        description: title
+      body:
+        type: string
+        description: body
+
   GamePlayingHistoryModel:
     type: object
     properties: 
@@ -258,6 +270,22 @@ definitions:
         description: The example name
 
 paths:
+  /fcm/sendToAllDevice:
+    post:
+      tags:
+        - FCM
+      parameters:
+        - in: body
+          name: body
+          description: "FCM Message Payload Model"
+          schema:
+            $ref: "#/definitions/MessagePayloadModel"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK!"
+
   /stuff:
     get:
       tags:
