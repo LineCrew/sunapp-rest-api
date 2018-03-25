@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
 import sequelize from '../../../common/dbConfig';
+import { UserEntity } from '../../entity';
 
 const serviceAccount = require('./serviceKey.json');
 
@@ -19,7 +20,7 @@ class Controller {
    */
   async sendToAllDevice(req, res) {
     try {
-      const targetUserRegistrationIds = await sequelize.query('select registrationId from users');
+      const targetUserRegistrationIds = await sequelize.query('select registrationId from users;');
       const registrationIds = [];
 
       /**
@@ -39,6 +40,42 @@ class Controller {
       if (registrationIds.length === 0) res.send({ message: 'NO_REGISTRATION_IDS' });
       else {
         admin.messaging().sendToDevice(registrationIds, payload)
+          .then(response => {
+            console.log('Successfully sent message: ', response);
+            res.send(response);
+          })
+          .catch(e => {
+            console.log('Error sending message: ', e);
+            res.send(e);
+          });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  /**
+   * 특정 기기에 FCM 메시지를 전송한다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async sendToDevice(req, res) {
+    try {
+      const targetUserEntity = await UserEntity.findById(req.params.userId);
+
+      /**
+       * notification: {
+       *  title: title,
+       *  body: body
+       * }
+       */
+      const payload = {
+        notification: req.body,
+      };
+
+      if (targetUserEntity.registrationId === null) res.send({ message: 'NO_REGISTRATION_IDS' });
+      else {
+        admin.messaging().sendToDevice(targetUserEntity.registrationId, payload)
           .then(response => {
             console.log('Successfully sent message: ', response);
             res.send(response);

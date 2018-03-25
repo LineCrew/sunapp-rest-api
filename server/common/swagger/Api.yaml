@@ -286,6 +286,26 @@ paths:
         200:
           description: "OK!"
 
+  /fcm/{userId}/sendToDevice:
+    post:
+      tags:
+        - FCM
+      parameters:
+        - in: path
+          name: userId
+          description: UserId
+
+        - in: body
+          name: body
+          description: "FCM Message Payload Model"
+          schema:
+            $ref: "#/definitions/MessagePayloadModel"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK!"
+
   /stuff:
     get:
       tags:
