@@ -6,8 +6,10 @@ import questionaireRouter from './api/controllers/questionaire/router';
 import faqRouter from './api/controllers/faq/router';
 import problemRouter from './api/controllers/problem/router';
 import advertiseRouter from './api/controllers/advertise/router';
+import adminRouter from './admin';
 
 export default function routes(app) {
+  app.use('/', adminRouter);
   app.use('/api/v1/examples', examplesRouter);
   app.use('/api/v1/user', userRouter);
   app.use('/api/v1/game', gameRouter);
