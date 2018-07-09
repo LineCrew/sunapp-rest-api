@@ -7,6 +7,7 @@ import {
   FriendEntity,
 } from '../../entity/';
 import { UserModel, StarModel, ApiResultModel } from '../../domain';
+import redis from '../../../common/redisConfig';
 import sequelize from '../../../common/dbConfig';
 
 /**
@@ -336,6 +337,15 @@ class Controller {
       res.status(500).send(new ApiResultModel({ statusCode: 200, message: e }));      
     }
   }
+
+  /**
+   * 사용자의 메시지 함을 조회한다.
+   * @param {*} req 
+   * @param {*} res 
+   */
+  async getNotificationMessages(req, res) {
+  }
+
 }
 
 export default new Controller();

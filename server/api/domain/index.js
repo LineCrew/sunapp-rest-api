@@ -1,4 +1,5 @@
 import ApiResultModel from './apiResultModel';
+import AdvertiseModel from './advertiseModel';
 import UserModel from './userModel';
 import StarModel from './starModel';
 import GameModel from './gameModel';
@@ -13,6 +14,7 @@ import StuffModel from './stuffModel';
 
 module.exports = {
   ApiResultModel,
+  AdvertiseModel,
   UserModel,
   StarModel,
   GameModel,

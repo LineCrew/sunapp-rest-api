@@ -4,4 +4,4 @@ import controller from './controller';
 export default express
   .Router()
   .get('/', controller.getAllAdvertiseList)
-  .post('/create', controller.createAdvertise);
+  .post('/', controller.createAdvertise);

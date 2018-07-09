@@ -55,19 +55,24 @@ class Controller {
       const targetUserEntity = await UserEntity.findById(req.body.userId);
       const targetQuestionaireEntity = await QuestionaireEntity.findById(req.body.questionaireId);
 
-      const generatedPlayingHistoryEntity = await PlayingHistoryEntity.create();
+      const generatedPlayingHistoryEntity = await PlayingHistoryEntity.create({
+        roomId: req.body.roomId,
+        result: req.body.result,
+      });
+
       await generatedPlayingHistoryEntity.setUser(targetUserEntity);
       await generatedPlayingHistoryEntity.setQuestionaire(targetQuestionaireEntity);
 
       res.status(200).send(new ApiResultModel(
-        { statusCode: 200, message: {
-          targetUserEntity,
-          targetQuestionaireEntity,
-          generatedPlayingHistoryEntity,
-        },
+        { statusCode: 200,
+          message: {
+            targetUserEntity,
+            targetQuestionaireEntity,
+            generatedPlayingHistoryEntity,
+          },
         }));
     } catch (e) {
-      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 

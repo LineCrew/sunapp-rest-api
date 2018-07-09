@@ -30,6 +30,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import ErrorHandler from './errorHandler';
 import morganBody from 'morgan-body';
+import redisClient from './redisConfig';
 
 const app = new Express();
 
@@ -69,6 +70,11 @@ export default class ExpressServer {
       l.info('database syncing done.');
     }
 
+    return this;
+  }
+
+  async checkRedisConnection() {
+    l.info('Redis connection status :', redisClient.connected);
     return this;
   }
 

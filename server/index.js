@@ -5,6 +5,7 @@ import routes from './routes';
 const apiRestServer = new Server();
 apiRestServer.syncSchema()
   .then(() => apiRestServer.router(routes))
+  .then(() => apiRestServer.checkRedisConnection())
   .then(() => apiRestServer.listen());
 
 export default apiRestServer;
