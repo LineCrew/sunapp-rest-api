@@ -53,6 +53,12 @@ definitions:
       questionaireId:
         type: integer
         description: "questionaireId"
+      roomId:
+        type: string
+        description: 일반 게임한 Room Id
+      result:
+        type: string
+        description: 승패 여부, WIN 또는 LOSE 로 표시.
 
   StuffModel:
     type: object
@@ -375,6 +381,23 @@ paths:
           description: "Exception"
         200:
           description: "OK!"
+    post:
+      tags:
+        - Advertise
+      description: "광고 정보 생성"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Advertise Object"
+          required: true
+          schema:
+            $ref: "#/definitions/AdvertiseModel"
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+  
   /problem:
     get:
       tags:
