@@ -9,6 +9,11 @@ import {
   ApiResultModel,
 } from '../../domain';
 
+import moment from '../../../common/seoulMoment';
+
+import fs from 'fs';
+import * as path from 'path';
+import l from '../../../common/logger';
 
 /**
  * 상품 도메인에 관한 모든 API 가 여기에 있습니다.
@@ -20,31 +25,98 @@ class Controller {
    * @param {*} req
    * @param {*} res
    */
-  async createStuffEntity(req, res) {
+  async createStuff(req, res) {
     try {
-      const stuffModel = new StuffModel(req.body);
-      const generatedStuffEntity = await StuffEntity.create(stuffModel);
+      const destination = `${req.files.eventImage.fieldname}-${Date.now()}.${req.files.eventImage.extension}`;
+      const stuffModel = new StuffModel({
+        eventImage: destination,
+        status: req.query.status,
+        active: req.query.active,
+        description: req.query.description,
+      });
 
-      res.status(200).send(new ApiResultModel({ statusCode: 200, message: generatedStuffEntity }));
+      fs.readFile(req.files.eventImage.path, async (err, data) => {
+        fs.writeFile(path.join(`./public/uploads/${destination}`), data, async e => {
+          if (err) res.status(500).send(new ApiResultModel({ statusCode: 500, e }));
+          else {
+            const generatedStuffEntity = await StuffEntity.create(stuffModel);
+            res.status(200).send(new ApiResultModel({ statusCode: 200, message: generatedStuffEntity }));
+          }
+        });
+      });
+    } catch (e) {
+      l.error(e);
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 이번주, 다음주 상품 목록을 불러옵니다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async getStuffEntities(req, res) {
+    try {
+      const thisWeekStuffEntity = await StuffEntity.findOne({ where: { status: 1 } });
+      const nextWeekStuffEntity = await StuffEntity.findOne({ where: { status: 2 } });
+
+      res.status(200).send(new ApiResultModel({ statusCode: 200,
+        message: {
+          thisWeek: thisWeekStuffEntity,
+          nextWeek: nextWeekStuffEntity,
+        } }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
   /**
-   * 상품 목록을 불러옵니다.
+   * 모든 상품 목록을 불러옵니다.
    * @param {*} req
-   * @param {*} res 
+   * @param {*} res
    */
-  async getStuffEntities(req, res) {
+  async getAllStuffEntities(req, res) {
     try {
-      const isActive = req.query.isActive;
-      const targetStuffEntities = await StuffEntity.findAll({
-        where: { isActive },
-      });
+      const targetStuffEntities = await StuffEntity.findAll();
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: targetStuffEntities }));
     } catch (e) {
-      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));      
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 상품의 활성화 상태를 수정합니다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async updateStuffStatus(req, res) {
+    try {
+      const updatedStuffEntity = await StuffEntity.update(
+        { active: req.query.isActive },
+        { where: { id: req.params.stuffId } },
+      );
+
+      if (updatedStuffEntity[0] === 1) res.status(200).send(new ApiResultModel({ statusCode: 200, message: 'SUCCESS' }));
+      else res.status(200).send(new ApiResultModel({ statusCode: 200, message: 'FAIL' }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 상품 삭제
+   * @param {*} req
+   * @param {*} res
+   */
+  async deleteStuffEntity(req, res) {
+    try {
+      const result = await StuffEntity.destroy({ where: { id: req.params.stuffId } });
+      res.status(200).send(new ApiResultModel({
+        statusCode: 200,
+        message: result,
+      }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 200, message: e }));
     }
   }
 
@@ -56,7 +128,7 @@ class Controller {
   async payStuffEntity(req, res) {
     try {
       const targetStuffEntity = await StuffEntity.findById(req.params.stuffId, {
-        where: { isActive: true },
+        where: { active: 1 },
       });
       const targetUserEntity = await UserEntity.findById(req.params.userId);
       const generatedGivenStuffEntity = await GivenStuffEntity.create();

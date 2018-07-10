@@ -62,18 +62,12 @@ definitions:
 
   StuffModel:
     type: object
-    properties: 
-      subject:
-        type: string
-        description: "상품 이름"
-      imageUrl:
-        type: string
-        description: "상품 이미지 URL"
+    properties:
       description:
         type: string
-        description: "상품 설명"
+        description: "이벤트 상품 설명, 예: 2018년 1월 1주차 이벤트 상품..."
       isActive:
-        type: boolean
+        type: integer
         description: "상품 활성화 여부"
 
   FriendsModel:
@@ -313,33 +307,85 @@ paths:
           description: "OK!"
 
   /stuff:
-    get:
-      tags:
-        - Stuff 
-      parameters:
-        - in: query
-          name: isActive
-          description: "상품의 활성화 여부"
-          type: boolean
-      responses:
-        500:
-          description: "KO!"
-        200:
-          description: "OK!"
     post:
       tags:
         - Stuff
+      consumes:
+        - "multipart/form-data"
+        - "application/json"
+      produces:
+        - "application/json"
       parameters:
-        - in: body
-          name: body
-          required: true
-          schema:
-            $ref: "#/definitions/StuffModel"
+        - in: formData
+          name: eventImage
+          type: file
+          description: The file to upload.
+        - in: query
+          name: description
+          type: string
+          description: 상품 설명
+        - in: query
+          name: active
+          type: integer
+          description: '0: 비활성화 1: 활성화'
+        - in: query
+          name: status
+          type: integer
+          description: '0: 아무데도 속하지 않음 1: 이번주 2: 다음주'
       responses:
         500:
           description: "KO!"
         200:
           description: "OK"
+
+    get:
+      tags:
+        - Stuff 
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
+  /stuff/all:
+    get:
+      tags:
+        - Stuff 
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+    
+  /stuff/{stuffId}:
+    put:
+      tags:
+        - Stuff
+      parameters:
+        - in: path
+          name: stuffId
+          description: 상품 Id
+        - in: query
+          name: isActive
+          description: 활성화 여부
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+    delete:
+      tags:
+        - Stuff
+      parameters:
+        - in: path
+          name: stuffId
+          type: integer
+          description: '상품 Id'
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
 
   /stuff/{userId}/pay:
     get:
