@@ -33,8 +33,27 @@ class Controller {
   async updateQuestionItemById(req, res) {
     try {
       const questionItemModel = new QuestionItemModel(req.body);
-      const result = await QuestionItemEntity.updateQuestionItmById(
+      const result = await QuestionItemEntity.update(
         questionItemModel, { where: { id: req.params.questionItemId } },
+      );
+      res.status(200).send(
+        new ApiResultModel({ statusCode: 200, message: result }),
+      );
+    } catch (e) {
+      res.send(200, new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 문제지 정보를 수정한다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async updateQuestionaireById(req, res) {
+    try {
+      const questionaireModel = new QuestionaireModel(req.body);
+      const result = await QuestionaireEntity.update(
+        questionaireModel, { where: { id: req.params.questionaireId } },
       );
       res.status(200).send(
         new ApiResultModel({ statusCode: 200, message: result }),
