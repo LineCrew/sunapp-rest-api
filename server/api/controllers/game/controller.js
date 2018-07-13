@@ -8,6 +8,7 @@ import {
 } from '../../entity/';
 import { ApiResultModel, GameModel, RankModel } from '../../domain/';
 import sequelize from '../../../common/dbConfig';
+import l from '../../../common/logger';
 
 class Controller {
   /**
@@ -107,11 +108,41 @@ class Controller {
 
       // GroupBy 를 통하여 UserId 로 모은 후, 정답별로 Sort 할 것
 
-      const result = await targetRankModel.getRankByType(req.query.limit);
+      const result = await targetRankModel.getRankTopFiftyByType({
+        startDate: req.query.startDate,
+        endDate: req.query.endDate,
+      });
+
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
-      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+      l.error(e);
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
+  }
+
+  /**
+   * 사용자의 랭킹 조회
+   * @param {*} req
+   * @param {*} res
+   */
+  async getUserRank(req, res) {
+    try {
+      const userId = req.params.userId;
+      const targetRankModel = new RankModel();
+
+      const result = await targetRankModel.getCurrentRankByUserId(
+        {
+          userId,
+          startDate: req.query.startDate,
+          endDate: req.query.endDate,
+        },
+      );
+
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+
   }
 
   /**

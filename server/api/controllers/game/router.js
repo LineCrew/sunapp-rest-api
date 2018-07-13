@@ -6,6 +6,7 @@ export default express
   .Router()
   .get('/', controller.getAllGameList)
   .get('/getRank', controller.getGameRank)
+  .get('/rank/:userId', controller.getUserRank)
   .get('/:userId/history', controller.getUserPlayingHistory)
   .get('/:gameId', controller.getGameById)
   .get('/:userId/playingHistory', controller.getPlayingHistory)

@@ -538,11 +538,35 @@ paths:
         200:
           description: "OK!"
 
+  /game/rank/{userId}:
+    get:
+      tags:
+        - Game
+      description: "사용자의 주간 점수 및 게임 랭킹을 조회한다."
+      parameters:
+        - in: query
+          name: startDate
+          type: string
+          description: 'YYYY-MM-DD 형식임. 조회할 랭킹 범위의 시작점'
+        - in: query
+          name: endDate
+          type: string
+          description: 'YYYY-MM-DD 형식임. 조회할 랭킹 범위의 끝점'
+        - in: path
+          name: userId
+          type: integer
+          description: "사용자 Id"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+
   /game/getRank:
     get:
       tags:
         - Game
-      description: "게임 랭킹을 불러온다."
+      description: "탑 50 게임 및 점수 랭킹을 불러온다."
       consumes:
         - "application/json"
       produces:
@@ -551,11 +575,15 @@ paths:
         - in: query
           name: rankType
           type: string
-          description: The type of rank to return. 
+          description: 주간 게임 순위의 경우 gameRanking 을, 주간 점수 순위의 경우 answerRanking 을 기입.
         - in: query
-          name: limit
-          type: integer
-          description: The numbers of items to return.
+          name: startDate
+          type: string
+          description: 'YYYY-MM-DD 형식임. 조회할 랭킹 범위의 시작점'
+        - in: query
+          name: endDate
+          type: string
+          description: 'YYYY-MM-DD 형식임. 조회할 랭킹 범위의 끝점'
       responses:
         500:
           description: "Exception"
@@ -566,7 +594,7 @@ paths:
     post:
       tags:
         - Game
-      description: "게임 플레잉 기록을 저장한다."
+      description: "게임 플레잉 기록을 저장하며, 랭킹에 꼭 필요하니 반드시 해야함."
       parameters:
         - in: body
           name: body
