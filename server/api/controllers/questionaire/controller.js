@@ -26,6 +26,25 @@ class Controller {
   }
 
   /**
+   * 문제 정보를 수정한다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async updateQuestionItemById(req, res) {
+    try {
+      const questionItemModel = new QuestionItemModel(req.body);
+      const result = await QuestionItemEntity.updateQuestionItmById(
+        questionItemModel, { where: { id: req.params.questionItemId } },
+      );
+      res.status(200).send(
+        new ApiResultModel({ statusCode: 200, message: result }),
+      );
+    } catch (e) {
+      res.send(200, new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
    * ex : /Questionaire/{userId}/{questionItemId}/answers
    * 사용자가 문제에 대한 응답하고, 정답인지 오답인지 조회하는 메서드
    * @param {*} req
