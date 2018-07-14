@@ -1028,6 +1028,22 @@ paths:
         500:
           description: "Exception"    
 
+  /user/{userId}/notifications:
+    get:
+      tags:
+        - User
+      description: 사용지의 메시지 함을 조회한다.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Exception"
+
   /user/{userId}/answers:
     get:
       tags:

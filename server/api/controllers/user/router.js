@@ -9,6 +9,7 @@ export default express
   .get('/question', controller.getUserQuestionEntity)
   .get('/:userId', controller.getById)
   .get('/:userId/answers', controller.getUserAnsweredList)
+  .get('/:userId/notifications', controller.getNotificationMessages)
   .get('/:userId/wrongAnswers', controller.getWrongAnswer)
   .put('/:userId', controller.updateUserInfo)
   .put('/:userId/star', controller.buyStar)

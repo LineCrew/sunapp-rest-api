@@ -6,6 +6,7 @@ import {
   UserQuestionEntity,
   FriendEntity,
 } from '../../entity/';
+import seoulMoment from "../../../common/seoulMoment";
 import { UserModel, StarModel, ApiResultModel } from '../../domain';
 import redis from '../../../common/redisConfig';
 import sequelize from '../../../common/dbConfig';
@@ -97,6 +98,28 @@ class Controller {
       const userModel = new UserModel(req.body);
       const result = await UserEntity.update(userModel, { where: { id: req.params.userId } });
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 사용자의 접속 기록을 레디스에 저장한다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async updateConnectHistory(req, res) {
+    try {
+      const hashKey = `user-connect-${req.params.userId}`;
+      redis.hmset(
+        hashKey,
+        [
+          'userId', req.params.userId,
+          'connected', seoulMoment().format('YYYY-MM-DD HH:MM:SS'),
+        ], (err, res_) => {
+          res.status(200).send(new ApiResultModel({ statusCode: 200, message: res_ }));
+        },
+      );
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
@@ -332,20 +355,28 @@ class Controller {
           where: { id: req.params.userId },
         },
       });
-      res.send(new ApiResultModel({ statusCode: 200, message: targetFriendEntity }));
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: targetFriendEntity }));
     } catch (e) {
-      res.status(500).send(new ApiResultModel({ statusCode: 200, message: e }));      
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
   /**
    * 사용자의 메시지 함을 조회한다.
-   * @param {*} req 
-   * @param {*} res 
+   * @param {*} req
+   * @param {*} res
    */
   async getNotificationMessages(req, res) {
+    try {
+      const notifications = await redis.hgetall(`user-notification-${req.params.userId}`);
+      res.status(200).send(new ApiResultModel({
+        statusCode: 200,
+        message: notifications,
+      }));
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));      
+    }
   }
-
 }
 
 export default new Controller();

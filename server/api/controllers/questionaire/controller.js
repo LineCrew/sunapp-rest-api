@@ -10,8 +10,8 @@ import l from '../../../common/logger';
 class Controller {
   /**
    * 문제지에 따른 모든 문제 내역을 조회한다.
-   * @param {*} req 
-   * @param {*} res 
+   * @param {*} req
+   * @param {*} res
    */
   async getQuestionItemsById(req, res) {
     try {
