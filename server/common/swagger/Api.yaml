@@ -7,6 +7,8 @@ basePath: /api/v1
 tags:
   - name: Examples
     description: Simple example endpoints
+  - name: Admin
+    description: 관리자 관련 Endpoints
   - name: Problem
     description: "문제 신고"
   - name: FAQ
@@ -187,6 +189,14 @@ definitions:
       questionaireName:
         type: string
 
+  UpdateQuestionaire:
+    type: object
+    properties:
+      questionaireId:
+        type: integer
+      questionaireName:
+        type: string
+
   QuestionItem:
     type: object
     properties:
@@ -270,6 +280,28 @@ definitions:
         description: The example name
 
 paths:
+  /admin/withdrawal:
+    get:
+      tags:
+        - Admin
+      description: 모든 사용자의 탈퇴 기록을 살펴본다.
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
+  /admin/connection:
+    get:
+      tags:
+        - Admin
+      description: 모든 사용자의 최근 접속 기록을 살펴본다.
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
   /fcm/sendToAllDevice:
     post:
       tags:
@@ -714,12 +746,28 @@ paths:
           description: "Exception"
         200:
           description: "Ok!"
+    put:
+      tags:
+        - Questionaire
+      description: 문제지 정보를 수정한다.
+      parameters:
+        - in: body
+          name: body
+          required: true
+          description: "수정하고자 하는 Questionaire Model"
+          schema:
+            $ref: "#/definitions/UpdateQuestionaire"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK!"
 
   /questionaire/{questionaireId}:
     get:
       tags:
         - Questionaire
-      description: 문제지의 모든 문제를 조회한다.
+      description: 문제지의 정보와 문제지의 모든 문제를 조회한다.
       consumes:
         - "application/json"
       produces:
@@ -734,6 +782,27 @@ paths:
           description: "몇 개 불러올 것인지, 전부 부르고 싶으면 값을 비우면 됨."
           name: limit
           type: integer
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "Ok!"
+
+  /questionaire/item/{questionItemId}:
+    put:
+      tags:
+        - Questionaire
+      description: 문제 아이템 정보를 수정한다.
+      parameters:
+        - in: path
+          name: questionItemId
+          description: 문제 아이템 Id
+          type: integer
+        - in: body
+          name: body
+          description: 수정하고자하는 문제 아이템 모델
+          schema:
+            $ref: "#/definitions/QuestionItem"
       responses:
         500:
           description: "Exception"
@@ -1093,6 +1162,20 @@ paths:
           in: body
           schema: 
             $ref: "#/definitions/User"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
+    post:
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The id of the entity to retrieve
+          type: integer
       responses:
         500:
           description: "Exception"

@@ -10,6 +10,7 @@ import seoulMoment from "../../../common/seoulMoment";
 import { UserModel, StarModel, ApiResultModel } from '../../domain';
 import redis from '../../../common/redisConfig';
 import sequelize from '../../../common/dbConfig';
+import l from '../../../common/logger';
 
 /**
  * Controller of User Domain.
@@ -111,10 +112,13 @@ class Controller {
   async updateConnectHistory(req, res) {
     try {
       const hashKey = `user-connect-${req.params.userId}`;
-      redis.hmset(
+      const userEntity = await UserEntity.findById(req.params.userId);
+      await redis.hmset(
         hashKey,
         [
           'userId', req.params.userId,
+          'email', userEntity.email,
+          'nickname', userEntity.nickname,
           'connected', seoulMoment().format('YYYY-MM-DD HH:MM:SS'),
         ], (err, res_) => {
           res.status(200).send(new ApiResultModel({ statusCode: 200, message: res_ }));
@@ -292,13 +296,24 @@ class Controller {
    */
   async userWithdrawal(req, res) {
     try {
-      const deletedUserEntity = await UserEntity.destroy({ where: { id: req.params.userId } });
+      const userEntity = await UserEntity.findById(req.params.userId);
+      // console.log(userEntity)
 
-      res.status(200).send(new ApiResultModel({
-        statusCode: 200,
-        message: deletedUserEntity,
-      }));
+      await UserEntity.destroy({ where: { id: req.params.userId } });
+
+      redis.hmset(
+        `user-withdrawal-${req.params.userId}`,
+        [
+          'userId', userEntity.id,
+          'email', userEntity.email,
+          'nickname', userEntity.nickname,
+          'connected', seoulMoment().format('YYYY-MM-DD HH:MM:SS'),
+        ], (err, res_) => {
+          res.status(200).send(new ApiResultModel({ statusCode: 200, message: userEntity }));
+        },
+      );
     } catch (e) {
+      l.error(e);
       res.status(500).send(new ApiResultModel({ statusCode: 200, message: e }));
     }
   }
@@ -374,7 +389,7 @@ class Controller {
         message: notifications,
       }));
     } catch (e) {
-      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));      
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 }

@@ -36,9 +36,16 @@ class Controller {
       const result = await QuestionItemEntity.update(
         questionItemModel, { where: { id: req.params.questionItemId } },
       );
-      res.status(200).send(
-        new ApiResultModel({ statusCode: 200, message: result }),
-      );
+
+      if (result[0] === 1) {
+        res.status(200).send(
+          new ApiResultModel({ statusCode: 200, message: 'SUCCESS' }),
+        );
+      } else {
+        res.status(200).send(
+          new ApiResultModel({ statusCode: 500, message: 'FAILED' }),
+        );
+      }
     } catch (e) {
       res.send(200, new ApiResultModel({ statusCode: 500, message: e }));
     }
@@ -53,11 +60,17 @@ class Controller {
     try {
       const questionaireModel = new QuestionaireModel(req.body);
       const result = await QuestionaireEntity.update(
-        questionaireModel, { where: { id: req.params.questionaireId } },
+        questionaireModel, { where: { id: req.body.questionaireId } },
       );
-      res.status(200).send(
-        new ApiResultModel({ statusCode: 200, message: result }),
-      );
+      if (result[0] === 1) {
+        res.status(200).send(
+          new ApiResultModel({ statusCode: 200, message: 'SUCCESS' }),
+        );
+      } else {
+        res.status(200).send(
+          new ApiResultModel({ statusCode: 500, message: 'FAILED' }),
+        );
+      }
     } catch (e) {
       res.send(200, new ApiResultModel({ statusCode: 500, message: e }));
     }
