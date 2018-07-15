@@ -27,7 +27,7 @@ GameEntity.hasMany(TopicEntity, { as: 'topics' });
 
 TopicEntity.hasMany(QuestionaireEntity, { as: 'questionaires' });
 
-QuestionaireEntity.hasMany(QuestionItemEntity, { as: 'items' });
+QuestionaireEntity.hasMany(QuestionItemEntity, { as: 'items', onDelete: 'CASCADE' });
 
 UserEntity.hasMany(UserAnswerEntity, { as: 'userAnswers' });
 

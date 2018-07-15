@@ -8,6 +8,7 @@ const userEntity = sequelize.define('user', {
   accessToken: { type: DataTypes.STRING, allowNull: true },
   facebookUserId: { type: DataTypes.STRING },
   loginType: { type: DataTypes.ENUM, values: ['signUp', 'facebook'] },
+  userType: { type: DataTypes.ENUM, values: ['admin, user'] },
   registrationId: { type: DataTypes.STRING, allowNull: true },
   character: { type: DataTypes.ENUM, values: ['om', 'ym', 'ow', 'yw'] },
   star: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },

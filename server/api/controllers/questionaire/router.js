@@ -1,6 +1,5 @@
 import * as express from 'express';
 import controller from './controller';
-import UserValidator from '../../../common/userValidator';
 
 export default express
   .Router()
@@ -10,4 +9,5 @@ export default express
   .put('/', controller.updateQuestionaireById)
   .post('/create', controller.createQuestionaire)
   .post('/:questionaireId/addQuestionItem', controller.addQuestionItemToQuestionaire)
-  .post('/:userId/:questionItemId/answers', controller.answer);
+  .post('/:userId/:questionItemId/answers', controller.answer)
+  .delete('/:questionaireId', controller.deleteQuestionaireById);

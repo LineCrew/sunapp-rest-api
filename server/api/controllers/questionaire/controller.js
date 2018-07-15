@@ -21,7 +21,41 @@ class Controller {
         new ApiResultModel({ statusCode: 200, message: result[0] }),
       );
     } catch (e) {
-      res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 문제지 정보를 삭제한다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async deleteQuestionaireById(req, res) {
+    try {
+      const result = await QuestionaireEntity.destroy({ where: { id: req.params.questionaireId } });
+      res.status(200).send(
+        new ApiResultModel({ statusCode: 200, message: result }),
+      );
+    } catch (e) {
+      l.error(e);
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 문제 아이템을 삭제한다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async deleteQuestionItemById(req, res) {
+    try {
+      const result = await QuestionItemEntity.destroy({ where: { id: req.params.questionItemId } });
+      res.status(200).send(
+        new ApiResultModel({ statusCode: 200, message: result }),
+      );
+    } catch (e) {
+      l.error(e);
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
@@ -47,7 +81,7 @@ class Controller {
         );
       }
     } catch (e) {
-      res.send(200, new ApiResultModel({ statusCode: 500, message: e }));
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
@@ -180,8 +214,8 @@ class Controller {
       const generatedQuestionaireEntity = await QuestionaireEntity
         .create(questionaireModel);
 
-      const result = await targetTopicEntity.addQuestionaires(generatedQuestionaireEntity);
-      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+      await targetTopicEntity.addQuestionaires(generatedQuestionaireEntity);
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: generatedQuestionaireEntity }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }

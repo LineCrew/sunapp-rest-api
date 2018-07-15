@@ -787,6 +787,21 @@ paths:
           description: "Exception"
         200:
           description: "Ok!"
+    delete:
+      tags:
+        - Questionaire
+      description: 문제를 삭제한다.
+      parameters:
+        - in: path
+          name: questionaireId
+          description: "질문지 Id"
+          required: true
+          type: integer
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "Ok!"
 
   /questionaire/item/{questionItemId}:
     put:
