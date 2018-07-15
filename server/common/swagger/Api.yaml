@@ -226,11 +226,6 @@ definitions:
         type: string
       facebookUserId:
         type: string
-      userType:
-        type: string
-        enum:
-          - "user"
-          - "admin"
       loginType:
         type: string
         enum: 
