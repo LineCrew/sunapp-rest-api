@@ -1,12 +1,53 @@
 import redis from '../../../common/redisConfig';
 import sequelize from '../../../common/dbConfig';
 import l from '../../../common/logger';
-import ApiResultModel from '../../domain/apiResultModel';
+import { AdministratorModel, ApiResultModel } from '../../domain';
+import { AdministratorEntity } from '../../entity';
 
 /**
  * Controller of Admin Domain.
  */
 class Controller {
+
+  /**
+   * 관리자 계정을 생성한다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async insertAdministrator(req, res) {
+    try {
+      const administratorModel = new AdministratorModel(req.body);
+      const generatedAdminEntity = await AdministratorEntity.create(administratorModel);
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: generatedAdminEntity }));
+    } catch (e) {
+      l.error(e);
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 관리자 계정 로그인
+   * @param {*} req
+   * @param {*} res
+   */
+  async loginAdministrator(req, res) {
+    try {
+      const model = {
+        where: {
+          account: req.body.account,
+          password: req.body.password,
+          type: req.body.type,
+        },
+      };
+
+      const result = await AdministratorEntity.findOne(model);
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+    } catch (e) {
+      l.error(e);
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
   /**
    * 모든 사용자의 탈퇴 기록을 조회한다.
    * @param {*} req

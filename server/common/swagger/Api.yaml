@@ -36,6 +36,41 @@ produces:
   - application/json
 
 definitions:
+  AdminLoginModel:
+    type: object
+    properties:
+      account:
+        type: string
+        description: 로그인에 필요한 Id
+      password:
+        type: string
+        description: 로그인에 필요한 Pw
+      type:
+        type: string
+        enum:
+          - "admin"
+
+  AdministratorModel:
+    type: object
+    properties:
+      account:
+        type: string
+        description: 로그인에 필요한 Id
+      name:
+        type: string
+        description: 관리자 이름
+      company:
+        type: string
+        description: 회사 명
+      type:
+        type: string
+        enum: 
+          - "user"
+          - "admin"
+        description: 관리자 계정의 역할
+      password:
+        type: string
+        description: 비밀번호
   MessagePayloadModel:
     type: object
     properties:
@@ -280,6 +315,38 @@ definitions:
         description: The example name
 
 paths:
+  /admin/login:
+    post:
+      tags:
+        - Admin
+      description: 관리자 계정 로그인
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/AdminLoginModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
+  /admin/account:
+    post:
+      tags:
+        - Admin
+      description: 관리자 계정 생성
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/AdministratorModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+          
   /admin/withdrawal:
     get:
       tags:
