@@ -10,6 +10,24 @@ import { AdministratorEntity } from '../../entity';
 class Controller {
 
   /**
+   * 메시지와 함께 별을 보낸다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async sendStarWithMessage(req, res) {
+    try {
+      const result = await sequelize.query(`update users set star = star + ${req.body.star} where id in (${req.body.userIds.toString()});`);
+      req.body.userIds.forEach(async id => {
+        redis.lpush(`user-notification-${id}`, req.body.message.toString());
+        await redis.expire(`user-notification-${id}`, 60 * 60 * 24); // 하루 동안 보관
+      });
+      res.status(200).send(result[0]);
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
    * 관리자 계정을 생성한다.
    * @param {*} req
    * @param {*} res

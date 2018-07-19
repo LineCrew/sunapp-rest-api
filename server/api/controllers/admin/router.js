@@ -6,4 +6,5 @@ export default express
   .get('/withdrawal', controller.getWithdrawalHistory)
   .get('/connection', controller.getUserConnectionHistory)
   .post('/account', controller.insertAdministrator)
-  .post('/login', controller.loginAdministrator);
+  .post('/login', controller.loginAdministrator)
+  .post('/sendStar', controller.sendStarWithMessage);

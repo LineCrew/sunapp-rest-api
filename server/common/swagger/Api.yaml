@@ -36,6 +36,18 @@ produces:
   - application/json
 
 definitions:
+  AdminSendStarModel:
+    type: object
+    properties:
+      userIds:
+        type: array
+        items:
+          type: integer
+      star:
+        type: integer
+      message:
+        type: string
+
   AdminLoginModel:
     type: object
     properties:
@@ -321,6 +333,22 @@ definitions:
         description: The example name
 
 paths:
+  /admin/sendStar:
+    post:
+      tags:
+        - Admin
+      description: 관리자로서 별을 보낸다.
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/AdminSendStarModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
   /admin/login:
     post:
       tags:

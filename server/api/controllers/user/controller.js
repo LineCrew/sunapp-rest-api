@@ -212,7 +212,9 @@ class Controller {
           }, { transaction });
           const targetUserEntity = await UserEntity.findById(req.params.userId, { transaction });
           await transaction.commit();
-          res.status(200).send(new ApiResultModel({ statusCode: 200, message: { result, targetUserEntity } }));
+          res.status(200).send(new ApiResultModel(
+            { statusCode: 200, message: { result, targetUserEntity } },
+          ));
         }).catch(async e => {
           await transaction.rollback();
           res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
