@@ -10,15 +10,21 @@ import sequelize from '../../common/dbConfig';
 //   "developerPayload":"bGoa+V7g/yqDXvKRqq+JTFn4uQZbPiQJo4pf9RzJ",
 //   "purchaseToken":"opaque-token-up-to-1000-characters"
 // }'
+// const receiptEntity = sequelize.define('receipts', {
+//   orderId: { type: DataTypes.STRING },
+//   packageName: { type: DataTypes.STRING },
+//   productId: { type: DataTypes.INTEGER },
+//   price: { type: DataTypes.INTEGER },
+//   purchaseTime: { type: DataTypes.INTEGER },
+//   purchaseState: { type: DataTypes.INTEGER },
+//   developerPayload: { type: DataTypes.STRING },
+//   purchaseToken: { type: DataTypes.STRING },
+// });
+
 const receiptEntity = sequelize.define('receipts', {
-  orderId: { type: DataTypes.STRING },
-  packageName: { type: DataTypes.STRING },
-  productId: { type: DataTypes.INTEGER },
+  productName: { type: DataTypes.STRING },
   price: { type: DataTypes.INTEGER },
-  purchaseTime: { type: DataTypes.INTEGER },
-  purchaseState: { type: DataTypes.INTEGER },
-  developerPayload: { type: DataTypes.STRING },
-  purchaseToken: { type: DataTypes.STRING },
+  star: { type: DataTypes.INTEGER },
 });
 
 export default receiptEntity;

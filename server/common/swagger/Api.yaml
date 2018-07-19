@@ -295,6 +295,12 @@ definitions:
     properties:
       star:
         type: integer
+      productName:
+        type: string
+        description: "예 -> 별 5개 ..."
+      price:
+        type: integer
+        description: "가격"
   
   UserQuestionItem:
     type: object
@@ -1115,8 +1121,8 @@ paths:
         - User
       description: User Buy Star
       parameters:
-        - in: "body"
-          name: "body"
+        - in: body
+          name: body
           description: "User object"
           required: true
           schema:

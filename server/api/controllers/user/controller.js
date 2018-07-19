@@ -2,11 +2,12 @@ import uuid from 'uuid/v4';
 import {
   UserEntity,
   UserAnswerEntity,
+  ReceiptEntity,
   QuestionItemEntity,
   UserQuestionEntity,
   FriendEntity,
 } from '../../entity/';
-import seoulMoment from "../../../common/seoulMoment";
+import seoulMoment from '../../../common/seoulMoment';
 import { UserModel, StarModel, ApiResultModel } from '../../domain';
 import redis from '../../../common/redisConfig';
 import sequelize from '../../../common/dbConfig';
@@ -189,19 +190,37 @@ class Controller {
    * @param {*} res
    */
   async buyStar(req, res) {
-    try {
-      const starModel = new StarModel(req.body);
-      const updatedUserEntity = await UserEntity.update({
-        star: starModel.star,
-      }, {
-        where: {
-          id: req.params.userId,
-        },
-      });
+    const transaction = await sequelize.transaction();
 
-      res.status(200).send(new ApiResultModel({ statusCode: 200, message: starModel }));
+    const receiptModel = {
+      productName: req.body.productName,
+      star: req.body.star,
+      price: req.body.price,
+    };
+
+    try {
+      const receiptEntity = await ReceiptEntity.create(receiptModel);
+      const userEntity = await UserEntity.findById(req.params.userId, { transaction });
+      receiptEntity.setUser(userEntity)
+        .then(async result => {
+          await UserEntity.update({
+            star: userEntity.star + receiptModel.star,
+          }, {
+            where: {
+              id: req.params.userId,
+            },
+          }, { transaction });
+          const targetUserEntity = await UserEntity.findById(req.params.userId, { transaction });
+          await transaction.commit();
+          res.status(200).send(new ApiResultModel({ statusCode: 200, message: { result, targetUserEntity } }));
+        }).catch(async e => {
+          await transaction.rollback();
+          res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+        });
     } catch (e) {
-      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+      l.error(e);
+      await transaction.rollback();
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 
@@ -328,7 +347,7 @@ class Controller {
       const targetUserEntity = await UserEntity.findById(req.params.userId);
       const syncedFriendEntity = await sequelize.query(`select friendId from friends where userId = ${req.params.userId}`);
 
-      let syncedIds = [];
+      const syncedIds = [];
       syncedFriendEntity[0].forEach(e => syncedIds.push(e.friendId));
 
       if (syncedIds.length !== syncedFriendEntity[0].length) {

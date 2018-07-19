@@ -8,6 +8,8 @@ export default class StarModel {
   constructor(data = {}) {
     this.userId = data.userId;
     this.star = data.star;
+    this.productName = data.productName;
+    this.price = data.price;
 
     if (typeof (this.star) !== 'number') throw new Error('Invalid Type');
   }
