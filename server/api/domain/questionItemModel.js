@@ -1,6 +1,7 @@
 export default class QuestionItemModel {
   constructor(data = {}) {
     this.questionaireId = data.questionaireId;
+    this.number = data.number;
     this.content = data.content;
     this.example = data.example;
     this.case1 = data.case1;

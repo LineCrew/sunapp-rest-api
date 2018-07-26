@@ -7,6 +7,8 @@ basePath: /api/v1
 tags:
   - name: Examples
     description: Simple example endpoints
+  - name: Term
+    description: 약관 관련 Endpoints.    
   - name: Admin
     description: 관리자 관련 Endpoints
   - name: Problem
@@ -36,6 +38,12 @@ produces:
   - application/json
 
 definitions:
+  TermModel:
+    type: object
+    properties:
+      term:
+        type: string
+        description: 약관
   AdminSendStarModel:
     type: object
     properties:
@@ -249,6 +257,8 @@ definitions:
     properties:
       questionaireId:
         type: integer
+      number:
+        type: integer
       content:
         type: string
       example:
@@ -333,6 +343,60 @@ definitions:
         description: The example name
 
 paths:
+  /term:
+    post:
+      tags:
+        - Term
+      description: 약관 생성
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/TermModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+    get:
+      tags:
+        - Term
+      description: 약관 조회
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+  /term/{termId}:
+    put:
+      tags:
+        - Term
+      description: 약관 수정
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/TermModel"
+        - in: path
+          name: termId
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+    
+    delete:
+      tags:
+        - Term
+      parameters:
+        - in: path
+          name: termId
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
   /admin/sendStar:
     post:
       tags:

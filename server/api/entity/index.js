@@ -16,6 +16,7 @@ import ReceiptEntity from './ReceiptEntity';
 import FriendEntity from './FriendEntity';
 import PlayingHistoryEntity from './PlayingHistoryEntity';
 import AdministratorEntity from './AdministratorEntity';
+import TermEntity from './TermEntity';
 
 /**
  * GameEntity -> TopicEntity -> QuestionaireEntity -> QuestionItemEntity 식으로 관계가 정의된다.
@@ -75,4 +76,5 @@ module.exports = {
   GivenStuffEntity,
   PlayingHistoryEntity,
   AdministratorEntity,
+  TermEntity,
 };

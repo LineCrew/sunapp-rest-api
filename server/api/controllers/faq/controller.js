@@ -33,6 +33,36 @@ class Controller {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
+
+  /**
+   * FAQ 정보를 삭제한다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async deleteFaq(req, res) {
+    try {
+      await FaqEntity.destroy({ where: { id: req.params.faqId } });
+      res.status(200).send(new ApiResultModel({ statusCode: 200 }));
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * FAQ 정보를 수정한다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async updateFaq(req, res) {
+    try {
+      const faqModel = new FaqModel(req.body);
+      const result = await FaqEntity.update(faqModel, { where: { id: req.params.faqId } });
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
 }
 
 export default new Controller();
