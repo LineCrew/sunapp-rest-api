@@ -38,6 +38,13 @@ produces:
   - application/json
 
 definitions:
+  AdminProblemAnswerModel:
+    type: object
+    properties:
+      userId:
+        type: integer
+      answer:
+        type: string
   TermModel:
     type: object
     properties:
@@ -397,6 +404,22 @@ paths:
         200:
           description: "OK!"
 
+  /admin/sendProblemAnswer:
+    post:
+      tags:
+        - Admin
+      description: 관리자로서 사용자 문의에 대한 답변을 보낸다.
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/AdminProblemAnswerModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
   /admin/sendStar:
     post:
       tags:
@@ -641,6 +664,19 @@ paths:
         200:
           description: "OK!"
   
+  /problem/{userId}:
+    get:
+      tags:
+        - Problem
+      parameters:
+        - in: path
+          name: userId
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+  
   /problem:
     get:
       tags:
@@ -698,10 +734,40 @@ paths:
       tags:
         - FAQ
       description: "FAQ 을 조회함."
-      consumes: 
-        - "application/json"
-      produces:
-        - "application/json"
+      responses:
+        200:
+          description: "OK!"
+        500:
+          description: "Exception"
+ 
+  /faq/{faqId}:
+    put:
+      tags:
+        - FAQ
+      description: "FAQ 수정"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "FAQ Object"
+          required: true
+          schema:
+            $ref: "#/definitions/FaqModel"
+        - in: path
+          name: faqId
+          type: integer
+      responses:
+        200:
+          description: "OK!"
+        500:
+          description: "Exception"
+    delete:
+      tags:
+        - FAQ
+      description: "FAQ 삭제"
+      parameters:
+        - in: path
+          name: faqId
+          type: integer
       responses:
         200:
           description: "OK!"

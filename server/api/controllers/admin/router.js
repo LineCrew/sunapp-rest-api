@@ -7,4 +7,5 @@ export default express
   .get('/connection', controller.getUserConnectionHistory)
   .post('/account', controller.insertAdministrator)
   .post('/login', controller.loginAdministrator)
-  .post('/sendStar', controller.sendStarWithMessage);
+  .post('/sendStar', controller.sendStarWithMessage)
+  .post('/sendProblemAnswer', controller.sendProblemAnswer);

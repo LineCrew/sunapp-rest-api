@@ -8,6 +8,19 @@ import { AdministratorEntity } from '../../entity';
  * Controller of Admin Domain.
  */
 class Controller {
+  /**
+   * 고객의 Q&A 에 대한 답변
+   * @param {*} req
+   * @param {*} res
+   */
+  async sendProblemAnswer(req, res) {
+    try {
+      redis.lpush(`user-problem-answer-${req.body.userId}`, req.body.answer);
+      res.status(200).send(new ApiResultModel({ statusCode: 200 }));
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
 
   /**
    * 메시지와 함께 별을 보낸다.

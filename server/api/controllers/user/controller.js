@@ -404,11 +404,13 @@ class Controller {
    */
   async getNotificationMessages(req, res) {
     try {
-      const notifications = await redis.hgetall(`user-notification-${req.params.userId}`);
-      res.status(200).send(new ApiResultModel({
-        statusCode: 200,
-        message: notifications,
-      }));
+      // const notifications = await redis.hgetall(`user-notification-${req.params.userId}`);
+      redis.lrange(`user-notification-${req.params.userId}`, 0, -1, (err, obj) => {
+        res.status(200).send(new ApiResultModel({
+          statusCode: 200,
+          message: obj,
+        }));
+      });
     } catch (e) {
       res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }

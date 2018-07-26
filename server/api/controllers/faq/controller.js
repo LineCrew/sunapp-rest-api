@@ -7,8 +7,8 @@ import { FaqModel, ApiResultModel } from '../../domain';
 class Controller {
   /**
    * FAQ 정보를 생성한다.
-   * @param {*} req 
-   * @param {*} res 
+   * @param {*} req
+   * @param {*} res
    */
   async createFaq(req, res) {
     try {
@@ -22,8 +22,8 @@ class Controller {
 
   /**
    * FAQ 정보를 조회한다.
-   * @param {*} req 
-   * @param {*} res 
+   * @param {*} req
+   * @param {*} res
    */
   async getFaq(req, res) {
     try {

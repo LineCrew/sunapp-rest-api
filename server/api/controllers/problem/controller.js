@@ -2,6 +2,7 @@ import { ProblemEntity } from '../../entity/';
 import { ApiResultModel } from '../../domain';
 import fs from 'fs';
 import * as path from 'path';
+import redis from '../../../common/redisConfig';
 
 /**
  * Problem Controller
@@ -47,6 +48,24 @@ class Controller {
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 문의 답변 불러오기
+   * @param {*} req
+   * @param {*} res
+   */
+  async getProblemAnswer(req, res) {
+    try {
+      redis.lrange(`user-problem-answer-${req.params.userId}`, 0, -1, (err, obj) => {
+        res.status(200).send(new ApiResultModel({
+          statusCode: 200,
+          message: obj,
+        }));
+      });
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
 }
