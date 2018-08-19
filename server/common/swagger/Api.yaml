@@ -278,6 +278,8 @@ definitions:
         type: string
       case4:
         type: string
+      case5:
+        type: string
       answer:
         type: integer
   

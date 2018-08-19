@@ -12,6 +12,7 @@ const questionItemEntity = sequelize.define('questionItem', {
   case2: { type: DataTypes.STRING, allowNull: false },
   case3: { type: DataTypes.STRING, allowNull: false },
   case4: { type: DataTypes.STRING, allowNull: false },
+  case5: { type: DataTypes.STRING, allowNull: false },
   answer: { type: DataTypes.INTEGER, allowNull: false },
   limitTime: { type: DataTypes.INTEGER, allowNull: false },
 });
