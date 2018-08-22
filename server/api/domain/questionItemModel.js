@@ -8,6 +8,7 @@ export default class QuestionItemModel {
     this.case2 = data.case2;
     this.case3 = data.case3;
     this.case4 = data.case4;
+    this.case5 = data.case5;
     this.answer = data.answer;
   }
 }
