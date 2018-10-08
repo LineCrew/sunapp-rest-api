@@ -111,7 +111,10 @@ definitions:
   GamePlayingHistoryModel:
     type: object
     properties: 
-      userId:
+      firstUserId:
+        type: integer
+        description: "userId"
+      secondUserId:
         type: integer
         description: "userId"
       questionaireId:
@@ -123,7 +126,12 @@ definitions:
       result:
         type: string
         description: 승패 여부, WIN 또는 LOSE 로 표시.
-
+      gameType:
+        type: string
+        enum: 
+          - "random"
+          - "single"
+          - "friend"
   StuffModel:
     type: object
     properties:
@@ -183,6 +191,7 @@ definitions:
       answer:
         type: string
         description: "답변"
+      
   TokenModel:
     type: object
     properties:
@@ -220,6 +229,9 @@ definitions:
           - "random"
           - "single"
           - "friend"
+      elapsedTime:
+        type: integer
+        description: "푼 시간 초"
 
   Topic:
     type: object
@@ -281,6 +293,8 @@ definitions:
       case5:
         type: string
       answer:
+        type: integer
+      limitTime:
         type: integer
   
   User:

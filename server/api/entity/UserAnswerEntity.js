@@ -6,7 +6,7 @@ import sequelize from '../../common/dbConfig';
  */
 const userAnswerEntity = sequelize.define('answers', {
   answer: { type: DataTypes.INTEGER, allowNull: false },
-  solvedTime: { type: DataTypes.INTEGER },
+  elapsedTime: { type: DataTypes.INTEGER },
   isCorrect: { type: DataTypes.BOOLEAN, allowNull: false },
   gameType: { type: DataTypes.ENUM, allowNull: false, values: ['random', 'single', 'friend'] },
 });

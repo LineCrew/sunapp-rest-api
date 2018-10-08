@@ -6,13 +6,13 @@ import sequelize from '../../common/dbConfig';
  */
 const questionItemEntity = sequelize.define('questionItem', {
   number: { type: DataTypes.STRING, allowNull: false },
-  content: { type: DataTypes.STRING, allowNull: false },
-  example: { type: DataTypes.STRING, allowNull: false },
-  case1: { type: DataTypes.STRING, allowNull: false },
-  case2: { type: DataTypes.STRING, allowNull: false },
-  case3: { type: DataTypes.STRING, allowNull: false },
-  case4: { type: DataTypes.STRING, allowNull: false },
-  case5: { type: DataTypes.STRING, allowNull: false },
+  content: { type: DataTypes.TEXT, allowNull: false },
+  example: { type: DataTypes.TEXT, allowNull: false },
+  case1: { type: DataTypes.TEXT, allowNull: false },
+  case2: { type: DataTypes.TEXT, allowNull: false },
+  case3: { type: DataTypes.TEXT, allowNull: false },
+  case4: { type: DataTypes.TEXT, allowNull: false },
+  case5: { type: DataTypes.TEXT, allowNull: false },
   answer: { type: DataTypes.INTEGER, allowNull: false },
   limitTime: { type: DataTypes.INTEGER, allowNull: false },
 });

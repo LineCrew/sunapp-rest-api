@@ -156,13 +156,13 @@ class Controller {
     try {
       const questionItemModel = new QuestionItemModel(req.body);
 
-      const contentLength = questionItemModel.content.length;
+      // const contentLength = questionItemModel.content.length;
 
-      if (contentLength < 200) questionItemModel.limitTime = 10;
-      else if (contentLength > 200 && contentLength < 400) questionItemModel.limitTime = 20;
-      else if (contentLength > 400 && contentLength < 600) questionItemModel.limitTime = 30;
-      else if (contentLength > 600 && contentLength < 800) questionItemModel.limitTime = 40;
-      else if (contentLength > 800) questionItemModel.limitTime = 50;
+      // if (contentLength < 200) questionItemModel.limitTime = 10;
+      // else if (contentLength > 200 && contentLength < 400) questionItemModel.limitTime = 20;
+      // else if (contentLength > 400 && contentLength < 600) questionItemModel.limitTime = 30;
+      // else if (contentLength > 600 && contentLength < 800) questionItemModel.limitTime = 40;
+      // else if (contentLength > 800) questionItemModel.limitTime = 50;
 
       const targetQuestionaireEntity = await QuestionaireEntity.findById(req.params.questionaireId);
       const generatedQuestionItemEntity = await QuestionItemEntity.create(questionItemModel);

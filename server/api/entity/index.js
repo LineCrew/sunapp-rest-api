@@ -54,7 +54,8 @@ ReceiptEntity.belongsTo(UserEntity, { as: 'user' });
 FriendEntity.belongsTo(UserEntity, { foreignKey: 'friendId', as: 'friend' });
 FriendEntity.belongsTo(UserEntity, { foreignKey: 'userId', as: 'user' });
 
-PlayingHistoryEntity.belongsTo(UserEntity, { as: 'user' });
+PlayingHistoryEntity.belongsTo(UserEntity, { foreignKey: 'firstUserId', as: 'firstUser' });
+PlayingHistoryEntity.belongsTo(UserEntity, { foreignKey: 'secondUserId', as: 'secondUser' });
 PlayingHistoryEntity.belongsTo(QuestionaireEntity, { as: 'questionaire' });
 
 module.exports = {

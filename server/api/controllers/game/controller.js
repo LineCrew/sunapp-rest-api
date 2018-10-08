@@ -53,21 +53,25 @@ class Controller {
    */
   async setPlayingHistory(req, res) {
     try {
-      const targetUserEntity = await UserEntity.findById(req.body.userId);
+      const firstUserEntity = await UserEntity.findById(req.body.firstUserId);
+      const secondUserEntity = await UserEntity.findById(req.body.secondUserId);
       const targetQuestionaireEntity = await QuestionaireEntity.findById(req.body.questionaireId);
 
       const generatedPlayingHistoryEntity = await PlayingHistoryEntity.create({
         roomId: req.body.roomId,
         result: req.body.result,
+        gameType: req.body.gameType,
       });
 
-      await generatedPlayingHistoryEntity.setUser(targetUserEntity);
+      await generatedPlayingHistoryEntity.seqtFirstUser(firstUserEntity);
+      await generatedPlayingHistoryEntity.setSecondUser(secondUserEntity);
       await generatedPlayingHistoryEntity.setQuestionaire(targetQuestionaireEntity);
 
       res.status(200).send(new ApiResultModel(
         { statusCode: 200,
           message: {
-            targetUserEntity,
+            firstUserEntity,
+            secondUserEntity,
             targetQuestionaireEntity,
             generatedPlayingHistoryEntity,
           },

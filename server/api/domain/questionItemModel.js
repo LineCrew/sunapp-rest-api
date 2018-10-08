@@ -10,5 +10,6 @@ export default class QuestionItemModel {
     this.case4 = data.case4;
     this.case5 = data.case5;
     this.answer = data.answer;
+    this.limitTime = data.limitTime;
   }
 }
