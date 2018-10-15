@@ -235,11 +235,15 @@ class Controller {
     try {
       const userId = req.params.userId;
       const targetUserEntity = await UserEntity.findById(userId);
+      
+      const currentHeart = targetUserEntity.heart;
 
-      if (targetUserEntity.heart !== 0) {
-        targetUserEntity.heart -= 2;
+      if (currentHeart - 2 <= 0) {
+        res.status(200).send(new ApiResultModel({ statusCode: 200, message: { status: false } }));
       } else if (targetUserEntity.heart === 0) {
         res.status(200).send(new ApiResultModel({ statusCode: 200, message: { currentHeart: 0 } }));
+      } else {
+        targetUserEntity.heart -= 1;
       }
       await targetUserEntity.save();
 
