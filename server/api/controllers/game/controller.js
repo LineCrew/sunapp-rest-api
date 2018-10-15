@@ -63,7 +63,7 @@ class Controller {
         gameType: req.body.gameType,
       });
 
-      await generatedPlayingHistoryEntity.seqtFirstUser(firstUserEntity);
+      await generatedPlayingHistoryEntity.setFirstUser(firstUserEntity);
       await generatedPlayingHistoryEntity.setSecondUser(secondUserEntity);
       await generatedPlayingHistoryEntity.setQuestionaire(targetQuestionaireEntity);
 
@@ -88,7 +88,7 @@ class Controller {
    */
   async getPlayingHistory(req, res) {
     try {
-      const targetPlayingHistoryEntity = await sequelize.query(`select * from playingHistories as p left outer join questionaires as q on q.id = p.questionaire_id where p.user_id = ${req.params.userId} order by p.created_at desc limit 10;`);
+      const targetPlayingHistoryEntity = await sequelize.query(`select * from playingHistories as p left outer join questionaires as q on q.id = p.questionaire_id where p.firstUserId = ${req.params.userId} or p.secondUserId = ${req.params.userId} order by p.created_at desc limit 10;`);
       res.status(200).send(new ApiResultModel({ statusCode: 500, message: targetPlayingHistoryEntity[0] }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
