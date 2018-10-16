@@ -12,8 +12,9 @@ export default class RankModel {
    */
   async getCurrentRankByUserId(data = {}) {
     const targetRankEntity = await sequelize.query(
-      `SELECT user_id, nickname, winCount, loseCount, rank FROM (SELECT
-        user_id,
+      `SELECT firstUserId, secondUserId, nickname, winCount, loseCount, rank FROM (SELECT
+        firstUserId,
+        secondUserId,
         nickname,
         winCount,
         loseCount,
@@ -21,10 +22,11 @@ export default class RankModel {
         FROM 
           (SELECT 
             nickname,
-            user_id,
+            firstUserId,
+            secondUserId,
             count(IF(result='WIN', result, NULL)) AS winCount, 
             count(IF(result='LOSE', result, NULL)) AS loseCount 
-            FROM playingHistories p LEFT JOIN users u ON u.id = user_id WHERE DATE(p.created_at) BETWEEN '${data.startDate}' AND '${data.endDate}' GROUP BY user_id ORDER BY winCount DESC
+            FROM playingHistories p LEFT JOIN users u ON (u.id = firstUserId) or (u.id = secondUserId) WHERE DATE(p.created_at) BETWEEN '${data.startDate}' AND '${data.endDate}' GROUP BY firstUserId, secondUserId ORDER BY winCount DESC
           ) b CROSS JOIN (SELECT @RANK:=0) a) d WHERE d.user_id = ${data.userId}`);
 
     const targetAnswerRankingEntity = await sequelize.query(
@@ -67,8 +69,9 @@ export default class RankModel {
     if (this.rankType === 'gameRanking') {
 
       const targetRankEntities = await sequelize.query(
-        `SELECT user_id, nickname, winCount, loseCount, rank FROM (SELECT
-          user_id,
+        `SELECT firstUserId, secondUserId, nickname, winCount, loseCount, rank FROM (SELECT
+          firstUserId,
+          secondUserId,
           nickname,
           winCount,
           loseCount,
@@ -76,10 +79,11 @@ export default class RankModel {
           FROM 
             (SELECT 
               nickname,
-              user_id,
+              firstUserId,
+              secondUserId,
               count(IF(result='WIN', result, NULL)) AS winCount, 
               count(IF(result='LOSE', result, NULL)) AS loseCount 
-              FROM playingHistories p LEFT JOIN users u ON u.id = user_id WHERE DATE(p.created_at) BETWEEN '${input.startDate}' AND '${input.endDate}' GROUP BY user_id ORDER BY winCount DESC
+              FROM playingHistories p LEFT JOIN users u ON (u.id = firstUserId) or (u.id = secondUserId) WHERE DATE(p.created_at) BETWEEN '${input.startDate}' AND '${input.endDate}' GROUP BY firstUserId, secondUserId ORDER BY winCount DESC
             ) b CROSS JOIN (SELECT @RANK:=0) a) d limit 50`,
       );
 
