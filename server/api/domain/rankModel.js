@@ -11,23 +11,13 @@ export default class RankModel {
    * @param {*} data 
    */
   async getCurrentRankByUserId(data = {}) {
+
+    await sequelize.query('SET @rank := 0;')
+
     const targetRankEntity = await sequelize.query(
-      `SELECT firstUserId, secondUserId, nickname, winCount, loseCount, rank FROM (SELECT
-        firstUserId,
-        secondUserId,
-        nickname,
-        winCount,
-        loseCount,
-        @Rank:=@Rank + 1 AS rank 
-        FROM 
-          (SELECT 
-            nickname,
-            firstUserId,
-            secondUserId,
-            count(IF(result='WIN', result, NULL)) AS winCount, 
-            count(IF(result='LOSE', result, NULL)) AS loseCount 
-            FROM playingHistories p LEFT JOIN users u ON (u.id = firstUserId) or (u.id = secondUserId) WHERE DATE(p.created_at) BETWEEN '${data.startDate}' AND '${data.endDate}' GROUP BY firstUserId, secondUserId ORDER BY winCount DESC
-          ) b CROSS JOIN (SELECT @RANK:=0) a) d WHERE d.user_id = ${data.userId}`);
+      `SELECT * FROM (SELECT *, (@rank := @rank + 1) as rank FROM (SELECT
+        p.id, firstUserId, u.nickname, count(IF(result='WIN', result, NULL)) AS winCount, p.roomId, p.result, p.questionaire_id FROM playingHistories p LEFT JOIN users u ON u.id = firstUserId GROUP BY firstUserId ORDER BY winCount DESC) cnt) a where a.firstUserId = ${data.userId};`
+    );
 
     const targetAnswerRankingEntity = await sequelize.query(
       `SELECT user_id, nickname, answeredCount, rank FROM (SELECT
