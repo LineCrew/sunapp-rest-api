@@ -170,6 +170,23 @@ class Controller {
   }
 
   /**
+   * 닉네임 중복 여부 확인
+   * @param {*} req
+   * @param {*} res
+   */
+  async checkNickNameExists(req, res) {
+    try {
+      const result = await UserEntity.findOne({
+        where: { nickname: req.body.nickname },
+      });
+
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+    } catch (error) {
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: error }));
+    }
+  }
+
+  /**
    * ID 에 따른 회원 정보를 불러오는 함수
    * @param {*} req
    * @param {*} res

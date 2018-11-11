@@ -21,4 +21,5 @@ export default express
   .post('/question', controller.createUserQuestionEntity)
   .post('/:userId/syncFacebookFriends', controller.syncFacebookFriends)
   .post('/email/check', controller.checkIdExists)
+  .post('/nickname/check', controller.checkNickNameExists)
   .delete('/:userId/withdrawal', controller.userWithdrawal);
