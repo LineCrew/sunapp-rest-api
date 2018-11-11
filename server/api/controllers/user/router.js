@@ -20,4 +20,5 @@ export default express
   .post('/:userId', controller.updateConnectHistory)
   .post('/question', controller.createUserQuestionEntity)
   .post('/:userId/syncFacebookFriends', controller.syncFacebookFriends)
-  .delete('/:userId/withdrawal', controller.userWithdrawal)
+  .post('/email/check', controller.checkIdExists)
+  .delete('/:userId/withdrawal', controller.userWithdrawal);

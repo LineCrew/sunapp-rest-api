@@ -297,6 +297,12 @@ definitions:
       limitTime:
         type: integer
   
+  Check:
+    type: object
+    properties:
+      email:
+        type: string
+
   User:
     type: object
     properties:
@@ -1247,6 +1253,24 @@ paths:
           description: "KO!"
         200:
           description: "OK!"
+
+  /user/email/check:
+    post:
+      tags:
+        - User
+      description: 이메일 중복 여부 체크
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Email"
+          required: true
+          schema:
+            $ref: "#/definitions/Check"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK"
         
   /user/join:
     post:
