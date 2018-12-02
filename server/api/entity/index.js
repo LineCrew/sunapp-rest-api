@@ -50,6 +50,7 @@ GivenStuffEntity.belongsTo(StuffEntity, { as: 'stuff' });
 UserQuestionEntity.belongsTo(UserEntity, { as: 'user' });
 
 ReceiptEntity.belongsTo(UserEntity, { as: 'user' });
+UserEntity.hasMany(ReceiptEntity, { as: 'receipts' });
 
 FriendEntity.belongsTo(UserEntity, { foreignKey: 'friendId', as: 'friend' });
 FriendEntity.belongsTo(UserEntity, { foreignKey: 'userId', as: 'user' });

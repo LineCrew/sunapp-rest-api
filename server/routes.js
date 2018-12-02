@@ -10,6 +10,7 @@ import stuffRouter from './api/controllers/stuff/router';
 import fcmRouter from './api/controllers/fcm/router';
 import termRouter from './api/controllers/term/router';
 import adminRouter from './api/controllers/admin/router';
+import receiptRouter from './api/controllers/receipt/router';
 
 export default function routes(app) {
   app.use('/api/v1/examples', examplesRouter);
@@ -24,4 +25,5 @@ export default function routes(app) {
   app.use('/api/v1/fcm', fcmRouter);
   app.use('/api/v1/term', termRouter);
   app.use('/api/v1/admin', adminRouter);
+  app.use('/api/v1/receipt', receiptRouter);
 }

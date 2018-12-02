@@ -7,6 +7,8 @@ basePath: /api/v1
 tags:
   - name: Examples
     description: Simple example endpoints
+  - name: Receipt
+    description: 영수증 관련 API
   - name: Term
     description: 약관 관련 Endpoints.    
   - name: Admin
@@ -38,6 +40,16 @@ produces:
   - application/json
 
 definitions:
+  ReceiptModel:
+    type: object
+    properties:
+      productName:
+        type: string
+      price:
+        type: integer
+      star:
+        type: integer
+
   AdminProblemAnswerModel:
     type: object
     properties:
@@ -378,6 +390,35 @@ definitions:
         description: The example name
 
 paths:
+  /receipt:
+    get:
+      tags:
+        - Receipt
+      description: 영수증 불러오기
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+  
+  /receipt/{userId}:
+    post:
+      tags:
+        - Receipt
+      description: 영수증 생성
+      parameters:
+        - in: "body"
+          name: "body"
+          schema:
+            $ref: "#/definitions/ReceiptModel"
+        - in: "path"
+          name: userId
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
   /term:
     post:
       tags:
