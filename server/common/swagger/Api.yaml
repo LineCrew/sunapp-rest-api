@@ -691,6 +691,55 @@ paths:
           description: "Exception"
         200:
           description: "OK!"
+
+  /advertise/{advertiseId}:
+    put:
+      tags:
+        - Advertise
+      description: "광고 정보 편집"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/AdvertiseModel"
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+    delete:
+      tags:
+        - Advertise
+      description: "광고 정보 삭제"
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+
+  /advertise/{advertiseId}/{userId}/watch:
+    post:
+      tags:
+        - Advertise
+      description: "사용자의 광고 시청"
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+
+  /advertise/{advertiseId}/watch:
+    post:
+      tags:
+        - Advertise
+      description: "AdvertiseId 광고를 시청한 사용자 목록."
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+
   
   /problem/{userId}:
     get:

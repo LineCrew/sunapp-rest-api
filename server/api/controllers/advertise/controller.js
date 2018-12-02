@@ -20,6 +20,7 @@ class Controller {
       res.send(500, new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
+  
   /**
   * 모든 광고를 조회한다.
   * @param {*} req
@@ -37,6 +38,44 @@ class Controller {
   }
 
   /**
+  * 광고를 편집한다.
+  * @param {*} req
+  * @param {*} res
+  */
+  async updateAdvertiseById(req, res) {
+    try {
+      const advertiseModel = new AdvertiseModel(req.body);
+      
+      const result = await AdvertiseEntity.update(
+        advertiseModel, { where: { id: req.params.advertiseId } },
+      )
+
+      return res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+    } catch (e) {
+      return res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+  * 광고를 삭제한다.
+  * @param {*} req
+  * @param {*} res
+  */
+  async deleteAdvertiseById(req, res) {
+    try {
+      const advertiseModel = new AdvertiseModel(req.body);
+      
+      const result = await AdvertiseEntity.update(
+        advertiseModel, { where: { id: req.params.advertiseId } },
+      )
+
+      return res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+    } catch (e) {
+      return res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
    * 사용자의 광고 시청 API
    * @param {*} req 
    * @param {*} res 
@@ -49,7 +88,7 @@ class Controller {
       const targetUserEntity = await UserEntity.findById(userId);
       redis.lpush(`advertise-${advertiseId}`, targetUserEntity.toString());
 
-      // TODO: response 값을 정해주어야 함.
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: 'success' }));
     } catch (e) {
       res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
