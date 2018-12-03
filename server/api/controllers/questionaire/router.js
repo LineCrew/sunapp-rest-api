@@ -10,4 +10,5 @@ export default express
   .post('/create', controller.createQuestionaire)
   .post('/:questionaireId/addQuestionItem', controller.addQuestionItemToQuestionaire)
   .post('/:userId/:questionItemId/answers', controller.answer)
-  .delete('/:questionaireId', controller.deleteQuestionaireById);
+  .delete('/:questionaireId', controller.deleteQuestionaireById)
+  .delete('/item/:questionItemId', controller.deleteQuestionaireById);

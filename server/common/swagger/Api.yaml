@@ -1170,6 +1170,20 @@ paths:
           description: "Ok!"
 
   /questionaire/item/{questionItemId}:
+    delete:
+      tags:
+        - Questionaire
+      description: 문제 아이템 정보를 삭제한다.
+      parameters:
+        - in: path
+          name: questionItemId
+          description: 문제 아이템 Id
+          type: integer
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "Ok!"
     put:
       tags:
         - Questionaire

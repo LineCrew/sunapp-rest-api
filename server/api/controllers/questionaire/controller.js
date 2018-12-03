@@ -33,9 +33,7 @@ class Controller {
   async deleteQuestionaireById(req, res) {
     try {
       const result = await QuestionaireEntity.destroy({ where: { id: req.params.questionaireId } });
-      res.status(200).send(
-        new ApiResultModel({ statusCode: 200, message: result }),
-      );
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
       l.error(e);
       res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
@@ -50,9 +48,7 @@ class Controller {
   async deleteQuestionItemById(req, res) {
     try {
       const result = await QuestionItemEntity.destroy({ where: { id: req.params.questionItemId } });
-      res.status(200).send(
-        new ApiResultModel({ statusCode: 200, message: result }),
-      );
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
     } catch (e) {
       l.error(e);
       res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
@@ -68,7 +64,7 @@ class Controller {
     try {
       const questionItemModel = new QuestionItemModel(req.body);
       const result = await QuestionItemEntity.update(
-        questionItemModel, { where: { id: req.params.questionItemId } },
+        questionItemModel, { where: { id: req.params.questionItemId } }
       );
 
       if (result[0] === 1) {
@@ -94,7 +90,7 @@ class Controller {
     try {
       const questionaireModel = new QuestionaireModel(req.body);
       const result = await QuestionaireEntity.update(
-        questionaireModel, { where: { id: req.body.questionaireId } },
+        questionaireModel, { where: { id: req.body.questionaireId } }
       );
       if (result[0] === 1) {
         res.status(200).send(
