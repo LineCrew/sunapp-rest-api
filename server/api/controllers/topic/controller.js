@@ -38,6 +38,20 @@ class Controller {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }
+
+  async getById(req, res) {
+    try {
+      const entity = await TopicEntity.findById(req.params.topicId, {
+        include: [{
+          model: QuestionaireEntity,
+          as: 'questionaires',
+        }],
+      });
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: entity }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
 }
 
 export default new Controller();

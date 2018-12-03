@@ -15,7 +15,7 @@ class Controller {
    */
   async getQuestionItemsById(req, res) {
     try {
-      const result = await sequelize.query(`select qi.id as questionItemId, qi.questionaire_id as questionaireId, qi.content, qi.example, qi.case1, qi.case2, qi.case3, qi.case4, qi.answer,qi.limitTime from questionItems as qi inner join questionaires as q on qi.questionaire_id = q.id where qi.questionaire_id = ${req.params.questionaireId} order by rand() limit 5;`);
+      const result = await sequelize.query(`select qi.id as questionItemId, qi.questionaire_id as questionaireId, q.questionaireName, qi.content, qi.example, qi.case1, qi.case2, qi.case3, qi.case4, qi.answer,qi.limitTime from questionItems as qi inner join questionaires as q on qi.questionaire_id = q.id where qi.questionaire_id = ${req.params.questionaireId} order by rand() limit ${req.query.limit};`);
 
       res.status(200).send(
         new ApiResultModel({ statusCode: 200, message: result[0] }),

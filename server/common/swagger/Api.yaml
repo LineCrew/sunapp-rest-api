@@ -1067,6 +1067,23 @@ paths:
         200:
           description: "OK!"
 
+  /topic/{topicId}:
+    get:
+      tags:
+        - Topic
+      description: "Topic Id 정보를 가져온다."
+      parameters:
+        - in: path
+          name: topicId
+          description: "topicId"
+          required: true
+          type: integer
+      responses:
+        500:
+          description: "Exception!"
+        200:
+          description: "OK!"
+
   /topic/createTopic:
     post:
       tags:
