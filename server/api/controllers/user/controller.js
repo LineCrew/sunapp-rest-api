@@ -8,15 +8,36 @@ import {
   FriendEntity,
 } from '../../entity/';
 import seoulMoment from '../../../common/seoulMoment';
-import { UserModel, StarModel, ApiResultModel } from '../../domain';
+import { UserModel, ApiResultModel } from '../../domain';
 import redis from '../../../common/redisConfig';
 import sequelize from '../../../common/dbConfig';
 import l from '../../../common/logger';
+
+const Op = sequelize.Op;
 
 /**
  * Controller of User Domain.
  */
 class Controller {
+  /**
+   * @param {*} req
+   * @param {*} res
+   */
+  async login(req, res) {
+    try {
+      const targetUserEntity = await UserEntity.findAll({
+        where: {
+          email: req.body.email,
+          password: req.body.password,
+          active: true,
+        },
+      });
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: targetUserEntity }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
   /**
    * 토큰 리프레쉬
    * @param {*} req
@@ -24,9 +45,9 @@ class Controller {
    */
   async refreshAccessToken(req, res) {
     try {
-      const targetUserEntity = await UserEntity.findOne(
-        { where: { accessToken: req.body.currentToken } },
-      );
+      const targetUserEntity = await UserEntity.findAll({ 
+        where: { accessToken: req.body.currentToken },
+      });
 
       targetUserEntity.accessToken = req.body.refreshToken;
       await targetUserEntity.save();
@@ -57,9 +78,7 @@ class Controller {
         limit: 50,
       });
 
-      res.status(200).send(
-        new ApiResultModel({ statusCode: 200, message: targetUserAnswerEntity }),
-      );
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: targetUserAnswerEntity }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
@@ -356,24 +375,55 @@ class Controller {
   async userWithdrawal(req, res) {
     try {
       const userEntity = await UserEntity.findById(req.params.userId);
+      userEntity.active = false;
+      userEntity.deletedAt = seoulMoment().format('YYYY-MM-DD HH:mm:ss');
+      await userEntity.save();
+
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: 'SUCCESS' }));
       // console.log(userEntity)
 
-      await UserEntity.destroy({ where: { id: req.params.userId } });
+      // await UserEntity.destroy({ where: { id: req.params.userId } });
 
-      redis.hmset(
-        `user-withdrawal-${req.params.userId}`,
-        [
-          'userId', userEntity.id,
-          'email', userEntity.email,
-          'nickname', userEntity.nickname,
-          'connected', seoulMoment().format('YYYY-MM-DD HH:MM:SS'),
-        ], (err, res_) => {
-          res.status(200).send(new ApiResultModel({ statusCode: 200, message: userEntity }));
-        },
-      );
+      // redis.hmset(
+      //   `user-withdrawal-${req.params.userId}`,
+      //   [
+      //     'userId', userEntity.id,
+      //     'email', userEntity.email,
+      //     'nickname', userEntity.nickname,
+      //     'connected', seoulMoment().format('YYYY-MM-DD HH:MM:SS'),
+      //   ], (err, res_) => {
+      //     res.status(200).send(new ApiResultModel({ statusCode: 200, message: userEntity }));
+      //   },
+      // );
     } catch (e) {
       l.error(e);
       res.status(500).send(new ApiResultModel({ statusCode: 200, message: e }));
+    }
+  }
+
+  /**
+   * 탈퇴 기록 조회
+   * @param {*} req
+   * @param {*} res
+   */
+  async userWithDrawalHistory(req, res) {
+    try {
+      if (!req.body.startDate && !req.body.endDate) {
+      } else {
+        const userEntity = await UserEntity.findAll({
+          where: {
+            active: false,
+            deletedAt: {
+              [Op.lt]: new Date(req.body.endDate),
+              [Op.gte]: new Date(req.body.startDate),
+            },
+          },
+        });
+
+        res.status(200).send(new ApiResultModel({ statusCode: 200, message: userEntity }));
+      }
+    } catch (e) {
+      l.error(e);
     }
   }
 

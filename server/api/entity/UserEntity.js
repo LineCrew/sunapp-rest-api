@@ -8,6 +8,7 @@ const userEntity = sequelize.define('user', {
   accessToken: { type: DataTypes.STRING, allowNull: true },
   facebookUserId: { type: DataTypes.STRING },
   loginType: { type: DataTypes.ENUM, values: ['signUp', 'facebook'] },
+  active: { type: DataTypes.BOOLEAN, defaultValue: true, allowNull: false },
   registrationId: { type: DataTypes.STRING, allowNull: true },
   character: { type: DataTypes.ENUM, values: ['om', 'ym', 'ow', 'yw'] },
   star: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
@@ -19,6 +20,7 @@ const userEntity = sequelize.define('user', {
   birth: { type: DataTypes.STRING, allowNull: true },
   address: { type: DataTypes.STRING, allowNull: true },
   phone: { type: DataTypes.STRING, allowNull: true },
+  deletedAt: { type: DataTypes.DATE, allowNull: true },
 });
 
 export default userEntity;

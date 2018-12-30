@@ -5,9 +5,11 @@ import UserValidator from '../../../common/userValidator';
 export default express
   .Router()
   .get('/', controller.getAllUser)
+  .post('/login', controller.login)
   .get('/getPlayers', controller.getPlayers)
   .get('/question', controller.getUserQuestionEntity)
   .get('/:userId', controller.getById)
+  .post('/withdrawal/history', controller.userWithDrawalHistory)
   .get('/:userId/answers', controller.getUserAnsweredList)
   .get('/:userId/notifications', controller.getNotificationMessages)
   .get('/:userId/wrongAnswers', controller.getWrongAnswer)
