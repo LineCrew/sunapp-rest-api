@@ -409,6 +409,13 @@ class Controller {
   async userWithDrawalHistory(req, res) {
     try {
       if (!req.body.startDate && !req.body.endDate) {
+        const userEntity = await UserEntity.findAll({
+          where: {
+            active: false,
+          },
+        });
+
+        res.status(200).send(new ApiResultModel({ statusCode: 200, message: userEntity }));
       } else {
         const userEntity = await UserEntity.findAll({
           where: {
