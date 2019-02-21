@@ -79,6 +79,13 @@ definitions:
       term:
         type: string
         description: 약관
+
+  StarModel:
+    type: object
+    properties:
+      star:
+        type: integer
+
   AdminSendStarModel:
     type: object
     properties:
@@ -869,6 +876,13 @@ paths:
       tags:
         - Advertise
       description: "사용자의 광고 시청"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/StarModel"
+
       responses:
         500: 
           description: "Exception"

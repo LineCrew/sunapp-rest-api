@@ -86,6 +86,8 @@ class Controller {
       const userId = req.params.userId;
 
       const targetUserEntity = await UserEntity.findById(userId);
+      targetUserEntity.star = req.body.star;
+      await targetUserEntity.save();
       redis.lpush(`advertise-${advertiseId}`, targetUserEntity.toString());
 
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: 'success' }));
