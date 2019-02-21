@@ -4,6 +4,9 @@ import l from '../../../common/logger';
 import { AdministratorModel, ApiResultModel } from '../../domain';
 import { AdministratorEntity } from '../../entity';
 
+const crypto = require("crypto");
+
+
 /**
  * Controller of Admin Domain.
  */
@@ -31,11 +34,86 @@ class Controller {
     try {
       const result = await sequelize.query(`update users set star = star + ${req.body.star} where id in (${req.body.userIds.toString()});`);
       req.body.userIds.forEach(async id => {
-        redis.lpush(`user-notification-${id}`, req.body.message.toString());
-        await redis.expire(`user-notification-${id}`, 60 * 60 * 24); // 하루 동안 보관
+        const payload = {
+          'id': crypto.randomBytes(16).toString("hex"),
+          'userId': id,
+          'message': req.body.message,
+          "status": "UNREAD"
+        }
+
+        redis.lpush(`user-notification-${id}`, JSON.stringify(payload));
+        await redis.expire(`user-notification-${id}`, 60 * 60 * 24 * 7); // 7일 동안 보관
       });
       res.status(200).send(result[0]);
     } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * @param {*} req
+   * @param {*} res
+   */
+  async getMessages(req, res) {
+    try {
+      redis.lrange(`user-notification-${req.params.userId}`, 0, -1, (err, obj) => {
+        const val = [];
+        obj.forEach(v => val.push(JSON.parse(v)));
+        res.status(200).send(new ApiResultModel({ statusCode: 200, message: val }));
+      });
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 메시지를 보낸다.
+   * @param {*} req
+   * @param {*} res
+   */
+  async sendMessage(req, res) {
+    try {
+      req.body.userIds.forEach(async id => {
+        l.info(req.body);
+
+        // READ OR UNREAD
+        const payload = {
+          'id': crypto.randomBytes(16).toString("hex"),
+          'userId': id,
+          'message': req.body.message,
+          "status": "UNREAD"
+        }
+
+        redis.lpush(`user-notification-${id}`, JSON.stringify(payload));
+        await redis.expire(`user-notification-${id}`, 60 * 60 * 24 * 7); // 7일 동안 동안 보관
+      });
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: "SUCCESS" }));
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * userId, NotificationId 받기.
+   * @param {*} req
+   * @param {*} res
+   */
+  async readMessage(req, res) {
+    try {
+      redis.lrange(`user-notification-${req.params.userId}`, 0, -1, (err, obj) => {
+        obj.forEach(async v => {
+          l.info(v)
+          const data = JSON.parse(v);
+          if (data.id === req.params.notificationId && data.status === "UNREAD") {
+            await redis.lrem(`user-notification-${req.params.userId}`, 1, v);
+            data.status = "READ"
+            await redis.lpush(`user-notification-${req.params.userId}`, JSON.stringify(data));
+          }
+        });
+      });
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: "SUCCESS" }));
+    } catch (e) {
+      l.info(e);
       res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
     }
   }

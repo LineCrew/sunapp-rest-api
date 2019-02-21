@@ -91,6 +91,16 @@ definitions:
       message:
         type: string
 
+  AdminSendMessageModel:
+    type: object
+    properties:
+      userIds:
+        type: array
+        items:
+          type: integer
+      message:
+        type: string
+
   AdminLoginModel:
     type: object
     properties:
@@ -547,6 +557,53 @@ paths:
           name: body
           schema:
             $ref: "#/definitions/AdminSendStarModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
+  /admin/{userId}/messages:
+    get:
+      tags:
+        - Admin
+      description: 사용자의 알림 목록을 조회한다.
+      parameters:
+        - in: path
+          name: userId
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
+  /admin/sendMessage:
+    post:
+      tags:
+        - Admin
+      description: 관리자로서 별을 보낸다.
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/AdminSendMessageModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+  
+  /admin/{userId}/{notificationId}/readMessage:
+    post:
+      tags:
+        - Admin
+      description: 메시지를 읽는다.
+      parameters:
+        - in: path
+          name: userId
+        - in: path
+          name: notificationId
+          type: string
       responses:
         500:
           description: "KO!"
