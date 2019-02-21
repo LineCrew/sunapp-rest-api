@@ -86,7 +86,7 @@ class Controller {
       const userId = req.params.userId;
 
       const targetUserEntity = await UserEntity.findById(userId);
-      targetUserEntity.star = req.body.star;
+      targetUserEntity.star += req.body.star;
       await targetUserEntity.save();
       redis.lpush(`advertise-${advertiseId}`, targetUserEntity.toString());
 
