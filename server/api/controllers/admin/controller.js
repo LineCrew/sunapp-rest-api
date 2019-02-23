@@ -42,7 +42,7 @@ class Controller {
         }
 
         redis.lpush(`user-notification-${id}`, JSON.stringify(payload));
-        await redis.expire(`user-notification-${id}`, 60 * 60 * 24 * 7); // 7일 동안 보관
+        await redis.expire(`user-notification-${id}`, 60 * 60 * 24 * 30); // 30일 동안 보관
       });
       res.status(200).send(result[0]);
     } catch (e) {
@@ -85,7 +85,7 @@ class Controller {
         }
 
         redis.lpush(`user-notification-${id}`, JSON.stringify(payload));
-        await redis.expire(`user-notification-${id}`, 60 * 60 * 24 * 7); // 7일 동안 동안 보관
+        await redis.expire(`user-notification-${id}`, 60 * 60 * 24 * 30); // 30일 동안 동안 보관
       });
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: "SUCCESS" }));
     } catch (e) {

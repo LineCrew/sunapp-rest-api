@@ -28,6 +28,42 @@ class Controller {
   }
 
   /**
+   * Questionaire 에 있는 QuestionItems 전부 삭제
+   * /questionaire/{questionaireId}/all
+   * @param {*} req 
+   * @param {*} res 
+   */
+  async deleteQuestionItemsInQuestionare(req, res) {
+    try {
+      const result = await sequelize.query(`delete from questionItems where questionaire_id = ${req.params.questionaireId}`);
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: "SUCCESS" }));
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
+   * 
+   * @param {*} req
+   * @param {*} res
+   */
+  async updateQuestionItemsLimitTime(req, res) {
+    try {
+      const questionItems = req.body.questionItems;
+      const limitTime = req.body.limitTime
+      
+      questionItems.forEach(async id => {
+          await sequelize.query(`update questionItems set limitTime = ${limitTime} where id = ${id}`)
+      });
+
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: "SUCCESS" }));
+    } catch (e) {
+      l.error(e);
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
+    }
+  }
+
+  /**
    * 문제지 정보를 삭제한다.
    * @param {*} req
    * @param {*} res

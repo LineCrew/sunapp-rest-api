@@ -68,6 +68,16 @@ definitions:
       star:
         type: integer
 
+  UpdateQuestionItemsLimitTime:
+    type: object
+    properties:
+      questionItems:
+        type: array
+        items:
+          type: integer
+      limitTime:
+        type: integer
+
   AdminProblemAnswerModel:
     type: object
     properties:
@@ -1259,6 +1269,23 @@ paths:
         200:
           description: "OK!"
 
+  /questionaire/items/limitTime:
+    post:
+      tags:
+        - Questionaire
+      description: 문제 제한 시간 일괄 변경
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/UpdateQuestionItemsLimitTime"
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "OK!"
+
   /questionaire:
     get:
       tags:
@@ -1285,6 +1312,23 @@ paths:
           description: "Exception"
         200:
           description: "OK!"
+
+  /questionaire/{questionaireId}/all:
+    delete:
+      tags:
+        - Questionaire
+      description: 문제를 삭제한다.
+      parameters:
+        - in: path
+          name: questionaireId
+          description: "질문지 Id"
+          required: true
+          type: integer
+      responses:
+        500:
+          description: "Exception"
+        200:
+          description: "Ok!"
 
   /questionaire/{questionaireId}:
     get:
