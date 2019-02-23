@@ -20,11 +20,16 @@ const Op = sequelize.Op;
  */
 class Controller {
 
+  /**
+   * 나의 점수 불러오기
+   * @param {*} req
+   * @param {*} res
+   */
   async getMyScore(req, res) {
     try {
-      const totalWinCount = await sequelize.query(`select count(*) from playingHistories where firstUserId = ${req.params.userId} and result = 'win'`);
-      const totalLoseCount = await sequelize.query(`select count(*) from playingHistories where firstUserId = ${req.params.userId} and result = 'lose'`);
-      const totalScoreCount = await sequelize.query(`select count(*) from answers where user_id = ${req.params.userId} and isCorrect = 1;`);
+      const totalWinCount = await sequelize.query(`select count(*) as count from playingHistories where firstUserId = ${req.params.userId} and result = 'win'`);
+      const totalLoseCount = await sequelize.query(`select count(*) as count from playingHistories where firstUserId = ${req.params.userId} and result = 'lose'`);
+      const totalScoreCount = await sequelize.query(`select count(*) as count from answers where user_id = ${req.params.userId} and isCorrect = 1;`);
 
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: {
         totalWin: totalWinCount[0],

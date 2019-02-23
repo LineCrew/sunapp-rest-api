@@ -16,7 +16,7 @@ export default class RankModel {
 
     const targetRankEntity = await sequelize.query(
       `SELECT * FROM (SELECT *, (@rank := @rank + 1) as rank FROM (SELECT
-        p.id, firstUserId, u.nickname, count(IF(result='WIN', result, NULL)) AS winCount, p.roomId, p.result, p.questionaire_id FROM playingHistories p LEFT JOIN users u ON u.id = firstUserId GROUP BY firstUserId ORDER BY winCount DESC) cnt) a where a.firstUserId = ${data.userId};`
+        p.id, firstUserId, u.nickname, count(IF(result='WIN', result, NULL)) AS winCount, p.roomId, p.result, p.questionaire_id FROM playingHistories p LEFT JOIN users u ON u.id = firstUserId where date(p.created_at) between ${data.startDate} and ${data.endDate} GROUP BY firstUserId ORDER BY winCount DESC) cnt) a where a.firstUserId = ${data.userId};`
     );
 
     const targetAnswerRankingEntity = await sequelize.query(
