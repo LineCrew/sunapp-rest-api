@@ -6,6 +6,7 @@ export default express
   .Router()
   .get('/', controller.getAllUser)
   .post('/login', controller.login)
+  .get('/:userId/scores', controller.getMyScore)
   .get('/getPlayers', controller.getPlayers)
   .get('/question', controller.getUserQuestionEntity)
   .get('/:userId', controller.getById)

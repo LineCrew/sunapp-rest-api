@@ -43,7 +43,6 @@ class Controller {
   }
 
   /**
-   * 
    * @param {*} req
    * @param {*} res
    */

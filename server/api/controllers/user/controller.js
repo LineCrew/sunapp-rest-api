@@ -19,6 +19,20 @@ const Op = sequelize.Op;
  * Controller of User Domain.
  */
 class Controller {
+
+  async getMyScore(req, res) {
+    try {
+      const totalWinCount = await sequelize(`select count(*) from playingHistories where firstUserId = ${req.params.userId} and result = 'win'`);
+      const totalLoseCount = await sequelize(`select count(*) from playingHistories where firstUserId = ${req.params.userId} and result = 'lose'`);
+      const totalScoreCount = await sequelize(`select * from answers where user_id = ${req.params.userId} and isCorrect = 1;`);
+
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: {
+        totalWinCount, totalLoseCount, totalScoreCount,
+      } }));
+    } catch (e) {
+      res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));      
+    }
+  }
   /**
    * @param {*} req
    * @param {*} res

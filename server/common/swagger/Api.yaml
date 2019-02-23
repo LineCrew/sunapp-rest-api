@@ -1490,6 +1490,20 @@ paths:
         200: 
           description: "OK!"
 
+  /user/{userId}/scores:
+    get:
+      tags:
+        - User
+      description: 나의 총 승/패, 점수 정보 조회
+      parameters:
+        - in: path
+          name: userId
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "KO!"
+  
   /user/getPlayers:
     get:
       tags:
