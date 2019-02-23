@@ -22,6 +22,7 @@ import {
   PlayingHistoryEntity,
   AdministratorEntity,
   TermEntity,
+  AppQnaEntity,
 } from '../api/entity/';
 import * as http from 'http';
 import * as os from 'os';
@@ -70,6 +71,7 @@ export default class ExpressServer {
       await PlayingHistoryEntity.sync();
       await AdministratorEntity.sync();
       await TermEntity.sync();
+      await AppQnaEntity.sync();
 
       l.info('database syncing done.');
     }

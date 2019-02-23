@@ -7,6 +7,7 @@ import UserAnswerEntity from './UserAnswerEntity';
 import GameResultEntity from './GameResultEntity';
 import FaqEntity from './FaqEntity';
 import ProblemEntity from './ProblemEntity';
+import AppQnaEntity from './AppQnAEntity';
 import AdvertiseEntity from './AdvertiseEntity';
 import AdvertiseHistoryEntity from './AdvertiseHistoryEntity';
 import StuffEntity from './StuffEntity';
@@ -67,6 +68,7 @@ module.exports = {
   QuestionItemEntity,
   GameResultEntity,
   UserAnswerEntity,
+  AppQnaEntity,
   FaqEntity,
   ProblemEntity,
   AdvertiseEntity,

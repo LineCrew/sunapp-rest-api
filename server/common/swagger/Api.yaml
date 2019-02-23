@@ -7,6 +7,8 @@ basePath: /api/v1
 tags:
   - name: Examples
     description: Simple example endpoints
+  - name: AppQnA
+    description: 앱 질문 API
   - name: Receipt
     description: 영수증 관련 API
   - name: Term
@@ -926,6 +928,42 @@ paths:
     post:
       tags:
         - Problem
+      consumes:
+        - "multipart/form-data"
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: formData
+          name: appImage
+          type: file
+          description: The file to upload.
+        - in: query
+          name: email
+          type: string
+          description: email
+        - in: query
+          name: question
+          type: string
+          description: question
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+
+  /qna:
+    get:
+      tags:
+        - AppQnA
+      responses:
+        500: 
+          description: "Exception"
+        200:
+          description: "OK!"
+    post:
+      tags:
+        - AppQnA
       consumes:
         - "multipart/form-data"
         - "application/json"
