@@ -22,12 +22,14 @@ class Controller {
 
   async getMyScore(req, res) {
     try {
-      const totalWinCount = await sequelize(`select count(*) from playingHistories where firstUserId = ${req.params.userId} and result = 'win'`);
-      const totalLoseCount = await sequelize(`select count(*) from playingHistories where firstUserId = ${req.params.userId} and result = 'lose'`);
-      const totalScoreCount = await sequelize(`select * from answers where user_id = ${req.params.userId} and isCorrect = 1;`);
+      const totalWinCount = await sequelize.query(`select count(*) from playingHistories where firstUserId = ${req.params.userId} and result = 'win'`);
+      const totalLoseCount = await sequelize.query(`select count(*) from playingHistories where firstUserId = ${req.params.userId} and result = 'lose'`);
+      const totalScoreCount = await sequelize.query(`select * from answers where user_id = ${req.params.userId} and isCorrect = 1;`);
 
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: {
-        totalWinCount, totalLoseCount, totalScoreCount,
+        totalWin: totalWinCount[0],
+        totalLose: totalLoseCount[0],
+        totalScore: totalScoreCount[0],
       } }));
     } catch (e) {
       res.status(500).send(new ApiResultModel({ statusCode: 500, message: e }));      
