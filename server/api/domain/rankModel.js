@@ -57,24 +57,19 @@ export default class RankModel {
 
     // 주간 순위 50 개를 불러온다.
     if (this.rankType === 'gameRanking') {
-
       const targetRankEntities = await sequelize.query(
-        `SELECT firstUserId, secondUserId, nickname, winCount, loseCount, rank FROM (SELECT
+        `SELECT firstUserId, nickname, winCount, rank FROM (SELECT
           firstUserId,
-          secondUserId,
           nickname,
           winCount,
-          loseCount,
           @Rank:=@Rank + 1 AS rank 
           FROM 
             (SELECT 
               nickname,
               firstUserId,
-              secondUserId,
-              count(IF(result='WIN', result, NULL)) AS winCount, 
-              count(IF(result='LOSE', result, NULL)) AS loseCount 
-              FROM playingHistories p LEFT JOIN users u ON (u.id = firstUserId) or (u.id = secondUserId) WHERE DATE(p.created_at) BETWEEN '${input.startDate}' AND '${input.endDate}' GROUP BY firstUserId, secondUserId ORDER BY winCount DESC
-            ) b CROSS JOIN (SELECT @RANK:=0) a) d limit 50`,
+              count(IF(result='win', result, NULL)) AS winCount
+              FROM playingHistories p LEFT JOIN users u ON (u.id = firstUserId) WHERE DATE(p.created_at) BETWEEN '${input.startDate}' AND '${input.endDate}' GROUP BY firstUserId ORDER BY winCount DESC
+            ) b CROSS JOIN (SELECT @RANK:=0) a) d limit 50;`,
       );
 
       return targetRankEntities[0];
