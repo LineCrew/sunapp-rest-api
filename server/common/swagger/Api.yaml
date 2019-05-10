@@ -49,6 +49,12 @@ definitions:
         type: string
       userId:
         type: integer
+      startDate:
+        type: string
+        description: 'YYYY-MM-DD 형식임. 조회할 랭킹 범위의 시작점'
+      endDate:
+        type: string
+        description: 'YYYY-MM-DD 형식임. 조회할 랭킹 범위의 끝점'
 
   DateModel:
     type: object

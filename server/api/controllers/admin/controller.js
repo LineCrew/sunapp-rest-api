@@ -17,7 +17,8 @@ class Controller {
   async fetchUserInfoByCondition(req, res) {
     // 게임이력, 별구매 및 충전, QNA, 문제오류 신고
     const condition = req.body.condition;
-
+    
+    
     try {
       if (condition === 'PlayingHistories') {
         /**
@@ -26,7 +27,16 @@ class Controller {
          * datetime (TODO)
          */
         const winPlayinghHistories = await PlayingHistoryEntity.findAll({
-          where: { firstUserId: req.body.userId, result: 'win' },
+          where: {
+            firstUserId: req.body.userId,
+            result: 'win',
+            created_at: {
+              between: [
+                new Date(req.body.startDate).toISOString(),
+                new Date(req.body.endDate).toISOString(),
+              ],
+            },
+          },
           include: {
             model: QuestionaireEntity,
             as: 'questionaire',
@@ -34,7 +44,16 @@ class Controller {
         });
 
         const losePlayinghHistories = await PlayingHistoryEntity.findAll({
-          where: { secondUserId: req.body.userId, result: 'lose' },
+          where: {
+            secondUserId: req.body.userId,
+            result: 'lose',
+            created_at: {
+              between: [
+                new Date(req.body.startDate).toISOString(),
+                new Date(req.body.endDate).toISOString(),
+              ],
+            },
+          },
           include: {
             model: QuestionaireEntity,
             as: 'questionaire',
@@ -44,11 +63,12 @@ class Controller {
         const result = {
           winPlayinghHistories,
           losePlayinghHistories,
-        }
+        };
 
         res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
       }
     } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));
       l.error(e);
     }
   }
