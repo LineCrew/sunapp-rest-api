@@ -11,4 +11,5 @@ export default express
   .post('/sendStar', controller.sendStarWithMessage)
   .post('/sendMessage', controller.sendMessage)
   .post('/:userId/:notificationId/readMessage', controller.readMessage)
-  .post('/sendProblemAnswer', controller.sendProblemAnswer);
+  .post('/sendProblemAnswer', controller.sendProblemAnswer)
+  .post('/userInfo', controller.fetchUserInfoByCondition);

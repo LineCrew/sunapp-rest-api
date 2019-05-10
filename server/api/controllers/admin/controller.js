@@ -2,15 +2,57 @@ import redis from '../../../common/redisConfig';
 import sequelize from '../../../common/dbConfig';
 import l from '../../../common/logger';
 import { AdministratorModel, ApiResultModel } from '../../domain';
-import { AdministratorEntity } from '../../entity';
+import { 
+  AdministratorEntity,
+  PlayingHistoryEntity,
+  QuestionaireEntity,
+} from '../../entity';
 
-const crypto = require("crypto");
-
+const crypto = require('crypto');
 
 /**
  * Controller of Admin Domain.
  */
 class Controller {
+  async fetchUserInfoByCondition(req, res) {
+    // 게임이력, 별구매 및 충전, QNA, 문제오류 신고
+    const condition = req.body.condition;
+
+    try {
+      if (condition === 'PlayingHistories') {
+        /**
+         * 게임 이력 Request Body
+         * userId
+         * datetime (TODO)
+         */
+        const winPlayinghHistories = await PlayingHistoryEntity.findAll({
+          where: { firstUserId: req.body.userId, result: 'win' },
+          include: {
+            model: QuestionaireEntity,
+            as: 'questionaire',
+          },
+        });
+
+        const losePlayinghHistories = await PlayingHistoryEntity.findAll({
+          where: { secondUserId: req.body.userId, result: 'lose' },
+          include: {
+            model: QuestionaireEntity,
+            as: 'questionaire',
+          },
+        });
+
+        const result = {
+          winPlayinghHistories,
+          losePlayinghHistories,
+        }
+
+        res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+      }
+    } catch (e) {
+      l.error(e);
+    }
+  }
+
   /**
    * 고객의 Q&A 에 대한 답변
    * @param {*} req

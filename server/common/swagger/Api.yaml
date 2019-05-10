@@ -42,6 +42,14 @@ produces:
   - application/json
 
 definitions:
+  UserInfoByConditionModel:
+    type: object
+    properties:
+      condition:
+        type: string
+      userId:
+        type: integer
+
   DateModel:
     type: object
     properties:
@@ -544,6 +552,22 @@ paths:
       parameters:
         - in: path
           name: termId
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
+  /admin/userInfo:
+    post:
+      tags:
+        - Admin
+      description: 관리자로서 사용자의 조건에 따라 정보를 조회한다.
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/UserInfoByConditionModel"
       responses:
         500:
           description: "KO!"
