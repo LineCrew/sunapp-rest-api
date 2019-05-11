@@ -24,6 +24,7 @@ import sequelize from '../../common/dbConfig';
 const receiptEntity = sequelize.define('receipts', {
   productName: { type: DataTypes.STRING },
   price: { type: DataTypes.INTEGER },
+  type: { type: DataTypes.STRING },
   star: { type: DataTypes.INTEGER },
 });
 

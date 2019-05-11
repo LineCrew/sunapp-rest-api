@@ -5,11 +5,10 @@ import { ReceiptModel, ApiResultModel } from '../../domain/';
  * Controller of Topic Domain.
  */
 class Controller {
-  
   /**
    * 영수증 생성 API
-   * @param {*} req 
-   * @param {*} res 
+   * @param {*} req
+   * @param {*} res
    */
   async post(req, res) {
     try {
@@ -18,7 +17,6 @@ class Controller {
       const targetUserEntity = await UserEntity.findById(req.params.userId);
       const generatedReceiptEntity = await ReceiptEntity.create(receiptModel);
       await targetUserEntity.addReceipts(generatedReceiptEntity);
-
       res.status(200).send(new ApiResultModel({ statusCode: 200, message: generatedReceiptEntity }));
     } catch (e) {
       console.log(e);

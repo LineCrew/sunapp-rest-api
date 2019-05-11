@@ -6,6 +6,8 @@ import {
   AdministratorEntity,
   PlayingHistoryEntity,
   QuestionaireEntity,
+  ReceiptEntity,
+  UserEntity,
 } from '../../entity';
 
 const crypto = require('crypto');
@@ -17,8 +19,6 @@ class Controller {
   async fetchUserInfoByCondition(req, res) {
     // 게임이력, 별구매 및 충전, QNA, 문제오류 신고
     const condition = req.body.condition;
-    
-    
     try {
       if (condition === 'PlayingHistories') {
         /**
@@ -66,6 +66,24 @@ class Controller {
         };
 
         res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+      } else if (condition === 'ReceiptHistory') {
+        const targetReceiptEntity = await ReceiptEntity
+          .findAll({
+            where: {
+              user_id: req.body.userId,
+              created_at: {
+                between: [
+                  new Date(req.body.startDate).toISOString(),
+                  new Date(req.body.endDate).toISOString(),
+                ],
+              },
+            },
+            include: [{
+              model: UserEntity,
+              as: 'user',
+            }],
+          });
+        res.status(200).send(new ApiResultModel({ statusCode: 200, message: targetReceiptEntity }));
       }
     } catch (e) {
       res.status(200).send(new ApiResultModel({ statusCode: 500, message: e }));

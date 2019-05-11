@@ -3,5 +3,6 @@ export default class ReceiptModel {
     this.productName = data.productName;
     this.price = data.price;
     this.star = data.star;
+    this.type = data.type;
   }
 }

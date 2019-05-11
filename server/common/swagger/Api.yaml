@@ -77,6 +77,9 @@ definitions:
     properties:
       productName:
         type: string
+      type:
+        type: string
+        description: 무료 및 선물이면 free, 유료이면 purchase 로 할 것.
       price:
         type: integer
       star:
