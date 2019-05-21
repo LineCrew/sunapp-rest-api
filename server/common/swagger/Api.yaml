@@ -567,6 +567,22 @@ paths:
         200:
           description: "OK!"
 
+  /admin/connectionRate:
+    post:
+      tags:
+        - Admin
+      description: 종목별 접속률 조회.
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/DateModel"
+      responses:
+        500:
+          description: "KO!"
+        200:
+          description: "OK!"
+
   /admin/userInfo:
     post:
       tags:

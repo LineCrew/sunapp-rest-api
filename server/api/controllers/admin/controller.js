@@ -16,6 +16,53 @@ const crypto = require('crypto');
  * Controller of Admin Domain.
  */
 class Controller {
+  /**
+   * 종목별 접속 정보 기능
+   * @param {*} req
+   * @param {*} res
+   */
+  async fetchConnectionRateBySubject(req, res) {
+    try {
+      const date = {
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+      };
+
+      const allConnectionBySubject = await sequelize.query(
+        'SELECT count(DISTINCT(a.user_id)) AS userCount, q.topic_id, t.topicName FROM answers AS a INNER JOIN questionItems AS i ON i.id = a.item_id INNER JOIN questionaires AS q ON q.id = i.questionaire_id INNER JOIN topics AS t ON t.id = q.topic_id GROUP BY q.topic_id;',
+      );
+
+      const connectionBySubjectAndDate = await sequelize.query(
+        `SELECT count(DISTINCT(a.user_id)) AS userCount, q.topic_id, t.topicName FROM answers AS a INNER JOIN questionItems AS i ON i.id = a.item_id INNER JOIN questionaires AS q ON q.id = i.questionaire_id INNER JOIN topics AS t ON t.id = q.topic_id WHERE DATE(a.created_at) BETWEEN '${date.startDate}' AND '${date.endDate}' GROUP BY q.topic_id;`,
+      );
+
+      const all = allConnectionBySubject[0].map(c => c);
+      const byDate = connectionBySubjectAndDate[0].map(c => c);
+      const result = [];
+
+      all.forEach(o => {
+        byDate.forEach(j => {
+          if (o.topic_id === j.topic_id) {
+            const connectionRate = (j.userCount / o.userCount) * 100;
+            result.push({
+              topicName: o.topicName,
+              connectionRate: Math.ceil(connectionRate),
+            });
+          } else {
+            result.push({
+              topicName: o.topicName,
+              connectionRate: '조회 기간 내에 문제를 푼 사용자가 존재하지 않음',
+              err: 'USER_NOT_EXSISTS',
+            });
+          }
+        });
+      });
+
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: result }));
+    } catch (e) {
+      res.status(200).send(new ApiResultModel({ statusCode: 200, message: e }));
+    }
+  }
   async fetchUserInfoByCondition(req, res) {
     // 게임이력, 별구매 및 충전, QNA, 문제오류 신고
     const condition = req.body.condition;

@@ -12,4 +12,5 @@ export default express
   .post('/sendMessage', controller.sendMessage)
   .post('/:userId/:notificationId/readMessage', controller.readMessage)
   .post('/sendProblemAnswer', controller.sendProblemAnswer)
-  .post('/userInfo', controller.fetchUserInfoByCondition);
+  .post('/userInfo', controller.fetchUserInfoByCondition)
+  .post('/connectionRate', controller.fetchConnectionRateBySubject);
